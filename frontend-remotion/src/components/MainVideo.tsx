@@ -53,23 +53,39 @@ export const MainVideo: React.FC<RenderProps> = ({
   const sceneLocalFrame = Math.max(0, frame - activeSceneStartFrame);
 
   // Dynamic cinematic camera motion per scene beat
-  const shotType = (activeScene.camera_shot || "").toLowerCase();
+  const cameraMotion = (activeScene.camera_motion || activeScene.camera_shot || "zoom_punch").toLowerCase();
+  const cameraAngle = (activeScene.camera_angle || "eye_level").toLowerCase();
   const sceneIdx = activeScene.index || 1;
 
   let zoomStart = 1.02;
   let zoomEnd = 1.12;
   let cameraRotate = 0;
+  let perspectiveTiltX = 0;
+  let perspectiveTiltY = 0;
 
-  if (shotType.includes("pull") || sceneIdx % 3 === 2) {
-    zoomStart = 1.15;
-    zoomEnd = 1.04;
-  } else if (shotType.includes("pan") || sceneIdx % 3 === 0) {
-    zoomStart = 1.08;
+  if (cameraMotion.includes("pull")) {
+    zoomStart = 1.18;
+    zoomEnd = 1.03;
+  } else if (cameraMotion.includes("pan") || sceneIdx % 3 === 0) {
+    zoomStart = 1.06;
     zoomEnd = 1.10;
-    cameraRotate = interpolate(sceneLocalFrame, [0, sceneDurationFrames], [-0.8, 0.8], {
+    const panDir = cameraMotion.includes("left") ? -1 : 1;
+    cameraRotate = interpolate(sceneLocalFrame, [0, sceneDurationFrames], [-1.0 * panDir, 1.0 * panDir], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     });
+  } else if (cameraMotion.includes("shake")) {
+    zoomStart = 1.04;
+    zoomEnd = 1.12;
+  }
+
+  // Perspective camera angle handling
+  if (cameraAngle.includes("low")) {
+    perspectiveTiltX = 3.5;
+  } else if (cameraAngle.includes("high")) {
+    perspectiveTiltX = -3.5;
+  } else if (cameraAngle.includes("isometric")) {
+    perspectiveTiltY = 3.0;
   }
 
   const cameraZoom = interpolate(sceneLocalFrame, [0, sceneDurationFrames], [zoomStart, zoomEnd], {
@@ -113,11 +129,12 @@ export const MainVideo: React.FC<RenderProps> = ({
         backgroundColor: theme.colors.bgDark,
         overflow: "hidden",
         fontFamily: theme.fonts.body,
-        transform: `scale(${finalScale}) rotate(${cameraRotate}deg)`,
+        perspective: 1200,
+        transform: `scale(${finalScale}) rotate(${cameraRotate}deg) rotateX(${perspectiveTiltX}deg) rotateY(${perspectiveTiltY}deg)`,
         transformOrigin: "center center",
       }}
     >
-      {/* 1. Dynamic Scene Composition Selection */}
+      {/* 1. Dynamic Storyboard-Driven Scene Composition Selection */}
       {(() => {
         const hasCustomAsset = Boolean(
           (activeScene.environment_asset && activeScene.environment_asset.trim()) ||
@@ -144,21 +161,19 @@ export const MainVideo: React.FC<RenderProps> = ({
 
         const comp = (activeScene.composition || "").toLowerCase();
         const shot = (activeScene.shot_type || activeScene.camera_shot || "").toLowerCase();
-        const cue = (activeScene.visual_cue || activeScene.visual || "").toLowerCase();
+        const propsList = activeScene.props && activeScene.props.length > 0 ? activeScene.props : activeScene.objects || [];
 
-        // 1. Macro Object Scene (Clock, Smartphone, Calendar, etc.)
-        if (
-          comp === "macro_inspection" ||
-          shot.includes("macro") ||
-          shot.includes("clock") ||
-          cue.includes("alarm") ||
-          cue.includes("kalender") ||
-          cue.includes("jam")
-        ) {
+        // Primary: Match by explicit storyboard composition
+        if (comp === "macro_inspection" || comp === "macro" || shot === "macro") {
           return (
             <MacroObjectScene
-              props={activeScene.props || []}
-              visualCue={cue}
+              headlineLine1={headLine1}
+              headlineLine2={headLine2}
+              visualIntent={activeScene.visual_intent}
+              props={propsList}
+              objects={activeScene.objects || []}
+              text={activeScene.text}
+              cameraMotion={activeScene.camera_motion}
               sceneLocalFrame={sceneLocalFrame}
               sceneDurationFrames={sceneDurationFrames}
               themeColor={theme_color || "#FF7A00"}
@@ -166,17 +181,16 @@ export const MainVideo: React.FC<RenderProps> = ({
           );
         }
 
-        // 2. Visual Metaphor Scene (Dopamine battery, brain with sunglasses, scale)
-        if (
-          comp === "visual_metaphor" ||
-          cue.includes("dopamine") ||
-          cue.includes("dopamin") ||
-          cue.includes("timbang") ||
-          cue.includes("scale")
-        ) {
+        if (comp === "visual_metaphor" || comp === "metaphor") {
           return (
             <VisualMetaphorScene
-              visualCue={cue}
+              headlineLine1={headLine1}
+              headlineLine2={headLine2}
+              visualIntent={activeScene.visual_intent}
+              props={propsList}
+              objects={activeScene.objects || []}
+              text={activeScene.text}
+              cameraMotion={activeScene.camera_motion}
               sceneLocalFrame={sceneLocalFrame}
               sceneDurationFrames={sceneDurationFrames}
               themeColor={theme_color || "#FF7A00"}
@@ -184,10 +198,15 @@ export const MainVideo: React.FC<RenderProps> = ({
           );
         }
 
-        // 3. Split Comparison Scene
-        if (comp === "split_comparison" || cue.includes("vs") || cue.includes("split")) {
+        if (comp === "split_comparison" || comp === "split" || shot === "split") {
           return (
             <SplitComparisonScene
+              headlineLine1={headLine1}
+              headlineLine2={headLine2}
+              visualIntent={activeScene.visual_intent}
+              props={propsList}
+              objects={activeScene.objects || []}
+              text={activeScene.text}
               sceneLocalFrame={sceneLocalFrame}
               sceneDurationFrames={sceneDurationFrames}
               themeColor={theme_color || "#FF7A00"}
@@ -195,15 +214,18 @@ export const MainVideo: React.FC<RenderProps> = ({
           );
         }
 
-        // 4. Character Action Scene (Default for Otak Receh & dynamic storytelling)
-        if (channel_id === "otak-receh" || comp === "character_action" || activeScene.character_action) {
+        if (comp === "character_action" || comp === "character" || channel_id === "otak-receh") {
           return (
             <CharacterActionScene
-              characterAction={activeScene.character_action || cue || "sitting_bored"}
+              characterAction={activeScene.character_action || "sitting_bored"}
               expression={activeScene.expression || "bored"}
               shotType={shot || "medium"}
               cameraMotion={activeScene.camera_motion || "zoom_punch"}
               environment={activeScene.environment || "bedroom_night"}
+              props={propsList}
+              headlineLine1={headLine1}
+              headlineLine2={headLine2}
+              visualIntent={activeScene.visual_intent}
               sceneLocalFrame={sceneLocalFrame}
               sceneDurationFrames={sceneDurationFrames}
               themeColor={theme_color || "#FF7A00"}
@@ -211,7 +233,7 @@ export const MainVideo: React.FC<RenderProps> = ({
           );
         }
 
-        // Fallback for historical/scientific channels (Santri AI / Oddly Known)
+        // Secondary fallback for other channels (Santri AI / Oddly Known)
         return (
           <StagedScene
             environmentAsset={activeScene.environment_asset}

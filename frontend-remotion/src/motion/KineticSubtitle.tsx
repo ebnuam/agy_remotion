@@ -21,7 +21,8 @@ export const KineticSubtitle: React.FC<KineticSubtitleProps> = ({
   const allWords = text.trim().split(/\s+/).filter(Boolean);
   if (allWords.length === 0) return null;
 
-  // Group words into punchy short chunks (3 to 4 words per visual card)
+  // Group words into punchy short chunks (max 3-4 words per visual card)
+  // Ensures words never overflow the screen width or crowd mobile safe areas
   const chunkSize = allWords.length <= 4 ? allWords.length : allWords.length <= 8 ? 3 : 4;
   const chunks: string[][] = [];
   for (let i = 0; i < allWords.length; i += chunkSize) {
@@ -43,11 +44,18 @@ export const KineticSubtitle: React.FC<KineticSubtitleProps> = ({
   const chunkElapsed = progressRatio - chunkIndex * chunkTimeSlot;
   const chunkLocalRatio = Math.min(1, Math.max(0, chunkElapsed / chunkTimeSlot));
 
-  // Determine active word within the chunk
-  const activeWordInChunk = Math.min(
-    currentChunk.length - 1,
-    Math.floor(chunkLocalRatio * currentChunk.length)
-  );
+  // Determine active word within the chunk based on proportional character weighting
+  const totalCharsInChunk = currentChunk.reduce((acc, w) => acc + w.length, 0);
+  let activeWordInChunk = 0;
+  let charAcc = 0;
+  const targetCharPos = chunkLocalRatio * totalCharsInChunk;
+  for (let i = 0; i < currentChunk.length; i++) {
+    charAcc += currentChunk[i].length;
+    if (targetCharPos <= charAcc) {
+      activeWordInChunk = i;
+      break;
+    }
+  }
 
   // Punchy spring entrance on chunk change
   const chunkEntranceFrame = Math.floor(chunkIndex * (durationFrames / chunks.length));
@@ -57,7 +65,7 @@ export const KineticSubtitle: React.FC<KineticSubtitleProps> = ({
     config: { damping: 14, stiffness: 180 },
   });
 
-  const cardScale = interpolate(chunkSpring, [0, 1], [0.85, 1], {
+  const cardScale = interpolate(chunkSpring, [0, 1], [0.88, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -66,7 +74,7 @@ export const KineticSubtitle: React.FC<KineticSubtitleProps> = ({
     <div
       style={{
         position: "absolute",
-        bottom: 160,
+        bottom: 220, // Clean mobile safe area (avoids TikTok/Reels bottom overlays)
         left: 0,
         right: 0,
         display: "flex",

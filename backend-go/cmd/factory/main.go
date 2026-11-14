@@ -22,6 +22,7 @@ func main() {
 	channelFlag := flag.String("channel", "otak-receh", "Channel ID (e.g. otak-receh, santri-ai, oddly-known)")
 	topicFlag := flag.String("topic", "Kenapa Kita Suka Menunda Pekerjaan Padahal Deadline Sudah Mepet?", "Topic for video generation")
 	scriptFlag := flag.String("script", "", "Path to manual script JSON file (bypasses LLM, saves 100% tokens)")
+	durationFlag := flag.Int("duration", 0, "Target duration in seconds (0 uses channel default)")
 	flag.Parse()
 
 	log.Println("==================================================")
@@ -39,6 +40,10 @@ func main() {
 	chConfig, err := channel.LoadChannelConfig(cfg.ChannelsDir, *channelFlag)
 	if err != nil {
 		log.Fatalf("[FATAL] Failed to load channel config: %v", err)
+	}
+	if *durationFlag > 0 {
+		chConfig.DurationTargetSeconds = *durationFlag
+		log.Printf("[INFO] Overriding duration target from flag: %d seconds", *durationFlag)
 	}
 	log.Printf("[INFO] Channel: %s (%s) | Voice: %s | Target: %ds", chConfig.DisplayName, chConfig.ID, chConfig.Voice, chConfig.DurationTargetSeconds)
 

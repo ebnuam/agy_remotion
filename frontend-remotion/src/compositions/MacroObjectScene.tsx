@@ -3,49 +3,77 @@ import { AbsoluteFill, interpolate, spring, useVideoConfig } from "remotion";
 import { theme } from "../theme";
 
 interface MacroObjectSceneProps {
+  headlineLine1?: string;
+  headlineLine2?: string;
+  visualIntent?: string;
   props?: string[];
-  visualCue?: string;
+  objects?: string[];
+  text?: string;
+  cameraMotion?: string;
   sceneLocalFrame: number;
   sceneDurationFrames: number;
   themeColor: string;
 }
 
 export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
+  headlineLine1 = "",
+  headlineLine2 = "",
+  visualIntent = "",
   props = [],
-  visualCue = "",
+  objects = [],
+  text = "",
+  cameraMotion = "zoom_punch",
   sceneLocalFrame,
   sceneDurationFrames,
   themeColor,
 }) => {
   const { fps } = useVideoConfig();
 
-  // Determine what macro object to show
-  const cue = (visualCue + " " + props.join(" ")).toLowerCase();
+  // Combine contextual signals from storyboard
+  const cue = (visualIntent + " " + props.join(" ") + " " + objects.join(" ") + " " + text).toLowerCase();
 
   const isClock = cue.includes("clock") || cue.includes("jam") || cue.includes("alarm");
   const isCalendar = cue.includes("calendar") || cue.includes("kalender") || cue.includes("deadline");
   const isPhone = cue.includes("phone") || cue.includes("hp") || cue.includes("medsos") || cue.includes("reels") || cue.includes("tiktok");
+  const isCoffee = cue.includes("kopi") || cue.includes("coffee") || cue.includes("kafe");
 
-  // Entrance spring
+  // Dynamic banner text derived from storyboard
+  const dynamicTag = (headlineLine2 || headlineLine1 || "INSPEKSI OBJEK").toUpperCase();
+  const dynamicSub = (headlineLine1 || "FOKUS UTAMA").toUpperCase();
+
+  // Camera motion dynamics
   const entrance = spring({
     frame: sceneLocalFrame,
     fps,
     config: theme.springs.bouncy,
   });
 
-  const scale = interpolate(entrance, [0, 1], [0.65, 1.05], {
+  let zoomStart = 0.85;
+  let zoomEnd = 1.08;
+  const cm = cameraMotion.toLowerCase();
+  if (cm.includes("pull")) {
+    zoomStart = 1.22;
+    zoomEnd = 1.02;
+  } else if (cm.includes("shake")) {
+    zoomStart = 1.0;
+    zoomEnd = 1.12;
+  }
+
+  const cameraScale = interpolate(
+    sceneLocalFrame,
+    [0, Math.max(1, sceneDurationFrames)],
+    [zoomStart, zoomEnd],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  const entranceScale = interpolate(entrance, [0, 1], [0.8, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Slow continuous macro drift & camera breathe
-  const cameraDrift = interpolate(sceneLocalFrame, [0, sceneDurationFrames], [1, 1.1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  // Rapid alarm vibration for clock / phone
-  const vibrate = (sceneLocalFrame % 6 < 3) ? Math.sin(sceneLocalFrame * 2.5) * 8 : 0;
+  // Camera shake intensity
+  const shakeIntensity = cm.includes("shake") || isClock ? 6 : 0;
+  const shakeX = shakeIntensity > 0 && sceneLocalFrame % 6 < 3 ? Math.sin(sceneLocalFrame * 2.5) * shakeIntensity : 0;
 
   return (
     <AbsoluteFill
@@ -98,7 +126,7 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
       {isClock && (
         <div
           style={{
-            transform: `translate(${vibrate}px, 0px) scale(${scale * cameraDrift})`,
+            transform: `translate(${shakeX}px, 0px) scale(${entranceScale * cameraScale})`,
             transformOrigin: "center center",
           }}
         >
@@ -124,8 +152,7 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
               const x1 = 340 + Math.sin(angle) * 190;
               const y1 = 340 - Math.cos(angle) * 190;
               const x2 = 340 + Math.sin(angle) * 210;
-              const y2 = 340 - Math.cos(angle) * 210;
-              return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F8FAFC" strokeWidth={i % 3 === 0 ? 8 : 4} strokeLinecap="round" />;
+              return <line key={i} x1={x1} y1={y1} x2={x2} y2={340 - Math.cos(angle) * 210} stroke="#F8FAFC" strokeWidth={i % 3 === 0 ? 8 : 4} strokeLinecap="round" />;
             })}
 
             {/* Digital Panic Time: 23:58 */}
@@ -133,9 +160,9 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
               23:58
             </text>
 
-            {/* Hour hand (pointing to 12) */}
+            {/* Hour hand */}
             <line x1="340" y1="340" x2="330" y2="200" stroke="#F8FAFC" strokeWidth="12" strokeLinecap="round" />
-            {/* Minute hand (pointing to 58 min) */}
+            {/* Minute hand */}
             <line x1="340" y1="340" x2="320" y2="150" stroke="#F8FAFC" strokeWidth="9" strokeLinecap="round" />
             {/* Rapid second hand ticking */}
             <g transform={`rotate(${(sceneLocalFrame * 18) % 360} 340 340)`}>
@@ -143,10 +170,10 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
               <circle cx="340" cy="340" r="14" fill="#EF4444" />
             </g>
 
-            {/* Alert badge */}
-            <rect x="200" y="440" width="280" height="60" rx="30" fill="#EF4444" />
-            <text x="340" y="480" textAnchor="middle" fill="#FFFFFF" fontSize="28" fontWeight="900" fontFamily="sans-serif">
-              DEADLINE PANIK!
+            {/* Dynamic Alert badge */}
+            <rect x="160" y="440" width="360" height="64" rx="32" fill="#EF4444" />
+            <text x="340" y="482" textAnchor="middle" fill="#FFFFFF" fontSize="26" fontWeight="900" fontFamily="sans-serif">
+              {dynamicTag.slice(0, 24)}
             </text>
           </svg>
         </div>
@@ -155,10 +182,10 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
       {/* ------------------------------------------------------------- */}
       {/* MACRO OBJECT 2: GLOWING SMARTPHONE NOTIFICATION STORM         */}
       {/* ------------------------------------------------------------- */}
-      {(isPhone || (!isClock && !isCalendar)) && (
+      {(isPhone || (!isClock && !isCalendar && !isCoffee)) && (
         <div
           style={{
-            transform: `translate(${vibrate}px, 0px) scale(${scale * cameraDrift})`,
+            transform: `translate(${shakeX}px, 0px) scale(${entranceScale * cameraScale})`,
             transformOrigin: "center center",
           }}
         >
@@ -194,11 +221,11 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
               </text>
             </g>
 
-            {/* Notification Pill: "5 Menit Aja Lagi" */}
+            {/* Dynamic Notification Pill derived from storyboard */}
             <g transform="translate(300, 620)">
-              <rect x="-180" y="-40" width="360" height="80" rx="24" fill="#1E293B" stroke="#38BDF8" strokeWidth="3" />
-              <text x="0" y="8" textAnchor="middle" fill="#F8FAFC" fontSize="26" fontWeight="800">
-                "Cuma scrolling 5 menit..."
+              <rect x="-200" y="-40" width="400" height="80" rx="24" fill="#1E293B" stroke="#38BDF8" strokeWidth="3" />
+              <text x="0" y="8" textAnchor="middle" fill="#F8FAFC" fontSize="24" fontWeight="800">
+                "{dynamicTag.slice(0, 26)}"
               </text>
             </g>
 
@@ -211,12 +238,12 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
       )}
 
       {/* ------------------------------------------------------------- */}
-      {/* MACRO OBJECT 3: CIRCLED CALENDAR WITH SKULL STAMP             */}
+      {/* MACRO OBJECT 3: CIRCLED CALENDAR WITH DEADLINE STAMP          */}
       {/* ------------------------------------------------------------- */}
       {isCalendar && (
         <div
           style={{
-            transform: `scale(${scale * cameraDrift})`,
+            transform: `scale(${entranceScale * cameraScale})`,
             transformOrigin: "center center",
           }}
         >
@@ -225,8 +252,8 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
             <rect x="40" y="40" width="600" height="600" rx="36" fill="#F8FAFC" stroke="#CBD5E1" strokeWidth="12" />
             {/* Red top bar */}
             <path d="M 40 40 L 640 40 L 640 160 L 40 160 Z" fill="#EF4444" />
-            <text x="340" y="120" textAnchor="middle" fill="#FFFFFF" fontSize="48" fontWeight="900">
-              BULAN INI
+            <text x="340" y="120" textAnchor="middle" fill="#FFFFFF" fontSize="44" fontWeight="900">
+              {dynamicSub.slice(0, 20)}
             </text>
 
             {/* Grid numbers */}
@@ -244,19 +271,73 @@ export const MacroObjectScene: React.FC<MacroObjectSceneProps> = ({
               <text x="540" y="380">30</text>
             </g>
 
-            {/* Today: Blood Red Thick Marker Circle on 28 */}
-            <ellipse cx="340" cy="370" rx="60" ry="50" fill="none" stroke="#EF4444" strokeWidth="14" strokeDasharray="280 20" />
-            <text x="340" y="385" fill="#EF4444" fontSize="44" fontWeight="900" textAnchor="middle">
+            {/* Today: Blood Red Marker Circle */}
+            <ellipse cx="340" cy="370" rx="65" ry="52" fill="none" stroke="#EF4444" strokeWidth="14" strokeDasharray="280 20" />
+            <text x="340" y="385" fill="#EF4444" fontSize="40" fontWeight="900" textAnchor="middle">
               HARI H
             </text>
 
-            {/* Red Stamp: "TERLAMBAT!" */}
-            <g transform="translate(340, 520) rotate(-12)">
-              <rect x="-170" y="-35" width="340" height="70" rx="14" fill="#DC2626" stroke="#991B1B" strokeWidth="4" />
-              <text x="0" y="12" textAnchor="middle" fill="#FFFFFF" fontSize="36" fontWeight="900" letterSpacing="4">
-                DEADLINE!
+            {/* Dynamic Stamp derived from headline */}
+            <g transform="translate(340, 520) rotate(-10)">
+              <rect x="-190" y="-35" width="380" height="70" rx="14" fill="#DC2626" stroke="#991B1B" strokeWidth="4" />
+              <text x="0" y="12" textAnchor="middle" fill="#FFFFFF" fontSize="30" fontWeight="900" letterSpacing="2">
+                {dynamicTag.slice(0, 22)}
               </text>
             </g>
+          </svg>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* MACRO OBJECT 4: STEAMING COFFEE CUP OF ENERGY                */}
+      {/* ------------------------------------------------------------- */}
+      {isCoffee && (
+        <div
+          style={{
+            transform: `scale(${entranceScale * cameraScale})`,
+            transformOrigin: "center center",
+          }}
+        >
+          <svg width="680" height="680" viewBox="0 0 680 680">
+            {/* Saucer */}
+            <ellipse cx="340" cy="540" rx="260" ry="40" fill="#334155" stroke="#64748B" strokeWidth="8" />
+            {/* Cup Body */}
+            <path d="M 160 260 L 200 480 Q 340 520 480 480 L 520 260 Z" fill="#EF4444" stroke="#B91C1C" strokeWidth="12" />
+            {/* Cup Handle */}
+            <path d="M 500 290 C 600 290, 600 440, 480 440" stroke="#EF4444" strokeWidth="22" strokeLinecap="round" fill="none" />
+            {/* Coffee Liquid */}
+            <ellipse cx="340" cy="260" rx="180" ry="36" fill="#3E2723" stroke="#5D4037" strokeWidth="6" />
+
+            {/* Animated Steam lines */}
+            <g opacity="0.65">
+              <path
+                d={`M 280 220 Q ${260 + Math.sin(sceneLocalFrame * 0.15) * 20} 140 280 70`}
+                stroke="#FFFFFF"
+                strokeWidth="8"
+                fill="none"
+                strokeLinecap="round"
+              />
+              <path
+                d={`M 340 210 Q ${360 + Math.cos(sceneLocalFrame * 0.18) * 20} 120 340 50`}
+                stroke="#FFFFFF"
+                strokeWidth="10"
+                fill="none"
+                strokeLinecap="round"
+              />
+              <path
+                d={`M 400 220 Q ${380 + Math.sin(sceneLocalFrame * 0.12) * 20} 140 400 70`}
+                stroke="#FFFFFF"
+                strokeWidth="8"
+                fill="none"
+                strokeLinecap="round"
+              />
+            </g>
+
+            {/* Dynamic Label Badge */}
+            <rect x="200" y="350" width="280" height="54" rx="27" fill="#FFFFFF" opacity="0.9" />
+            <text x="340" y="386" textAnchor="middle" fill="#0F172A" fontSize="26" fontWeight="900">
+              {dynamicTag.slice(0, 20)}
+            </text>
           </svg>
         </div>
       )}

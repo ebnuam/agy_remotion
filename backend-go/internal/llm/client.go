@@ -75,6 +75,17 @@ Kamu menyutradarai setiap frame seperti film animasi pendek:
 7. 'props': Array objek konkret seperti ["laptop", "smartphone", "clock", "coffee_cup", "calendar"].
 8. 'headline_line1' & 'headline_line2': Teks judul tebal kapital yang menonjol dan langsung terbaca dalam 1 detik.
 
+ATURAN KOMPOSISI SINEMATIK (SANGAT PENTING):
+1. Setiap video berdurasi 15 detik (4 adegan) WAJIB memiliki MINIMAL 3 JENIS 'composition' BERBEDA!
+   Contoh urutan beat dinamis:
+   - Beat 1: "character_action" (Karakter bosan di depan laptop, shot_type: "medium")
+   - Beat 2: "macro_inspection" (Close-up smartphone +99 notif ATAU jam dinding alarm 23:58, shot_type: "macro")
+   - Beat 3: "visual_metaphor" (Baterai dopamin instan 100%% ATAU timbangan dilema, shot_type: "medium")
+   - Beat 4: "character_action" (Ngetik panik brutal dengan lampu darurat merah, shot_type: "reaction") ATAU "split_comparison" (Rencana vs Realita)
+2. Variasikan 'shot_type' di setiap adegan: berganti antara "medium", "macro", "reaction", dan "wide".
+3. Variasikan 'camera_motion': "zoom_punch", "dramatic_pull", "shake_punch", "slow_drift".
+4. 'props' harus berisi objek konkret yang relevan dengan narasi (contoh: ["laptop", "coffee_cup"], ["smartphone", "notification"], ["dopamine_battery", "lightning"], ["alarm_clock", "sweat"]).
+
 ATURAN OUTPUT:
 - Jika durasi target ~15 detik: Buat tepat 4 adegan tajam.
 - Jika durasi target ~30-60 detik: Buat antara 8 hingga 12 adegan dinamis.

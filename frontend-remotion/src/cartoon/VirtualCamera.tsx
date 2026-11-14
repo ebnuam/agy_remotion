@@ -40,10 +40,10 @@ export const SHOT_PRESETS: Record<CameraShotType, CameraTransform> = {
     shakeIntensity: 0,
   },
   REACTION_FACE: {
-    scale: 2.1,
-    x: 10,
-    y: -500,
-    shakeIntensity: 9,
+    scale: 1.85,
+    x: 0,
+    y: -300,
+    shakeIntensity: 8,
   },
   MEDIUM_PANIC: {
     scale: 1.3,
