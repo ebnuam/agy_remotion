@@ -64,15 +64,15 @@ export const Root: React.FC = () => {
       {/* Production Pipeline MainVideo */}
       <Composition
         id="MainVideo"
-        component={MainVideo}
+        component={MainVideo as any}
         durationInFrames={30 * 37}
         fps={30}
         width={1080}
         height={1920}
-        defaultProps={defaultRenderProps}
-        calculateMetadata={async ({ props }: { props: RenderProps }) => {
+        defaultProps={defaultRenderProps as any}
+        calculateMetadata={async ({ props }: { props: any }) => {
           const fps = 30;
-          const durSec = props.audio_duration > 0 ? props.audio_duration : 35;
+          const durSec = props?.audio_duration > 0 ? props.audio_duration : 35;
           // Add 0.5s buffer at the end for smooth closing
           const durationInFrames = Math.ceil((durSec + 0.5) * fps);
 

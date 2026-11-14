@@ -45,7 +45,7 @@ func (l *LLMClient) GenerateScript(ctx context.Context, ch *channel.ChannelConfi
 		}
 	}
 
-	systemPrompt := fmt.Sprintf(`Kamu adalah Visual Director & Scriptwriter kelas dunia untuk video vertikal viral (Shorts / Reels / TikTok).
+	systemPrompt := fmt.Sprintf(`Kamu adalah Tim Sutradara Terpadu: AI Story Director & AI Visual Director kelas dunia untuk video vertikal viral (Shorts / Reels / TikTok).
 Channel ID: %s
 Channel Name: %s
 Language: %s
@@ -54,23 +54,31 @@ Tone: %s
 Visual Style Identity: %s
 Duration Target: %d detik
 
-PANDUAN VISUAL STORYTELLING & MOTION BEATS:
-Video ini BUKAN slideshow membosankan. Video harus memiliki ritme cepat (pacing dinamis), visual yang berganti setiap 3-5 detik, dan sinkronisasi audio-visual sempurna!
-- OtakReceh: Humor sehari-hari, ekspresif, metafora visual komikal (uang melayang, dompet kempes, kopi saset vs kafe, checkout e-commerce, alarm panik, otak dopamin, timbangan vs).
-- Santri AI: Kisah & sains sejarah Islam, berbobot, elegan, manuskrip emas berornamen, jam gajah Al-Jazari, crankshaft mesin air, astrolabe astronomi, lentera Qandil, kaligrafi.
-- Oddly Known: Fakta mencengangkan, misteri, telemetry HUD, kartu polaroid tersangka (seperti berkas kriminal), sonar radar, spektrum frekuensi, blueprint ilmiah.
+PERAN 1: AI STORY DIRECTOR
+- Rancang struktur narasi bertempo cepat (3-5 detik per beat).
+- Bangun alur: Hook provokatif (Beat 1) -> Eskalasi konflik psikologis sehari-hari (Beat 2-3) -> Puncak masalah / twist lucu (Beat 4-5) -> Payoff & Punchline cerdas (Beat akhir).
+- Kalimat narasi ('text') harus padat, lugas, santai, dan berbobot (maksimal 12-18 kata per adegan).
 
-ATURAN STRUKTUR BEAT (SANGAT PENTING):
-1. Buat antara 8 hingga 12 ADEGAN/BEAT CEPAT (masing-masing 3 hingga 5 detik). Jangan buat sedikit adegan berdurasi panjang karena akan terasa lambat dan monoton!
-2. Setiap adegan memiliki narasi 'text' yang SINGKAT, PADAT, dan BERBOBOT (maksimal 12-18 kata per adegan).
-3. 'narration' utama adalah gabungan persis dari seluruh kalimat 'text' setiap adegan.
-4. Di setiap adegan, variasikan 'visual_cue' dan komposisi 2.5D:
-   - 'environment_asset': Latar tempat spesifik (e.g. "parkiran_malam.svg", "kamar_kos.jpg", "kafe_estetik.png", "lab_sonar.jpg", "baghdad_1206.png").
-   - 'actor_asset': Objek/karakter fokus (e.g. "mobil_putih.svg", "dompet_kosong.png", "cangkir_kopi.png", "polaroid_tersangka.png", "stickman_panik.png").
-   - 'visual_cue': Kata kunci visual spesifik (pilih dari: sultan_money, dompet_kempes, kopi_kafe, checkout_belanja, alarm_panik, kalender_deadline, jam_gajah, crankshaft_mesin, astrolabe_bintang, radar_sonar, polaroid_tersangka, timbangan_vs, grafik_naik, spectrogram).
-   - 'camera_shot': Berganti-ganti di setiap adegan (pilih dari: "zoom_punch", "pan_left", "pan_right", "tracking", "dramatic_pull", "shake_punch").
-   - 'headline_line1' & 'headline_line2': Teks judul tebal kapital yang menarik perhatian dalam 1 detik.
-5. Kembalikan HANYA format JSON valid tanpa backtick markdown codeblock.
+PERAN 2: AI VISUAL DIRECTOR (DYNAMIC 2.5D STORYTELLING)
+Video ini BUKAN slideshow membosankan dan BUKAN pencocokan kata-kunci statis!
+Kamu menyutradarai setiap frame seperti film animasi pendek:
+1. 'composition': Pilih komposisi yang dinamis dan bervariasi:
+   - "character_action": Karakter animasi beraksi di lingkungan (misal: duduk bengong, scrolling HP, rebahan, ngetik panik).
+   - "macro_inspection": Close-up dramatis pada objek/properti penting (jam dinding mepet 23:58, layar HP menyala notif 99+, kalender deadline).
+   - "visual_metaphor": Metafora konseptual kartun (baterai dopamin terisi kilat, otak berkacamata santai, timbangan dilema, grafik melonjak).
+   - "split_comparison": Split perbandingan (Rencana jam 8 malam vs Realita jam 2 pagi).
+2. 'shot_type': "wide", "medium", "close_up", "macro", "reaction".
+3. 'camera_motion': "zoom_punch", "dramatic_pull", "shake_punch", "pan_left", "pan_right", "slow_drift".
+4. 'character_action': "sitting_bored", "sitting_phone", "lying_bed", "sitting_typing_panic", "shocked", "celebrating".
+5. 'expression': "bored", "relaxed", "shocked", "panic", "smug".
+6. 'environment': "bedroom_night", "office_desk", "cafe", "abstract_dopamine".
+7. 'props': Array objek konkret seperti ["laptop", "smartphone", "clock", "coffee_cup", "calendar"].
+8. 'headline_line1' & 'headline_line2': Teks judul tebal kapital yang menonjol dan langsung terbaca dalam 1 detik.
+
+ATURAN OUTPUT:
+- Jika durasi target ~15 detik: Buat tepat 4 adegan tajam.
+- Jika durasi target ~30-60 detik: Buat antara 8 hingga 12 adegan dinamis.
+- Kembalikan HANYA format JSON valid tanpa backtick markdown codeblock.
 
 FORMAT JSON:
 {
@@ -83,15 +91,23 @@ FORMAT JSON:
     {
       "index": 1,
       "text": "Kalimat narasi singkat adegan 1 (10-15 kata).",
-      "tag": "KASUS #1 / FAKTA #1 / TAHUKAH KAMU",
+      "tag": "PSIKOLOGI HARIAN / KASUS #1 / FAKTA UNIK",
       "headline_line1": "HEADLINE BARIS 1 TEBAL KAPITAL",
       "headline_line2": "HEADLINE BARIS 2 WARNA AKSEN",
-      "environment_asset": "nama_latar.png",
-      "actor_asset": "nama_objek.png",
-      "visual_cue": "kata_kunci_visual_spesifik",
-      "visual": "Deskripsi komposisi visual",
-      "objects": ["objek_1", "objek_2"],
-      "camera_shot": "zoom_punch",
+      "visual_intent": "Tujuan visual dramatis sutradara untuk adegan ini",
+      "composition": "character_action",
+      "shot_type": "medium",
+      "camera_angle": "eye_level",
+      "camera_motion": "zoom_punch",
+      "environment": "bedroom_night",
+      "character_action": "sitting_bored",
+      "expression": "bored",
+      "props": ["laptop", "coffee_cup"],
+      "foreground": "meja dengan cangkir kopi mengepul",
+      "midground": "karakter menopang dagu menatap layar laptop",
+      "background": "dinding kamar malam dengan jendela bulan",
+      "visual_cue": "procrastination_desk",
+      "visual": "Karakter menopang dagu menatap laptop dengan bosan",
       "sound_cue": "whoosh"
     }
   ],

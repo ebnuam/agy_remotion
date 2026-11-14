@@ -11,6 +11,19 @@ type Scene struct {
 	Text             string   `json:"text"`
 	Visual           string   `json:"visual"`
 	VisualCue        string   `json:"visual_cue,omitempty"`
+	VisualIntent     string   `json:"visual_intent,omitempty"`
+	ShotType         string   `json:"shot_type,omitempty"`
+	CameraAngle      string   `json:"camera_angle,omitempty"`
+	Composition      string   `json:"composition,omitempty"`
+	Environment      string   `json:"environment,omitempty"`
+	CharacterAction  string   `json:"character_action,omitempty"`
+	Expression       string   `json:"expression,omitempty"`
+	Props            []string `json:"props,omitempty"`
+	Foreground       string   `json:"foreground,omitempty"`
+	Midground        string   `json:"midground,omitempty"`
+	Background       string   `json:"background,omitempty"`
+	CameraMotion     string   `json:"camera_motion,omitempty"`
+	Transition       string   `json:"transition,omitempty"`
 	EnvironmentAsset string   `json:"environment_asset,omitempty"`
 	ActorAsset       string   `json:"actor_asset,omitempty"`
 	Tag              string   `json:"tag,omitempty"`

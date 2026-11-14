@@ -169,21 +169,21 @@ export const CartoonCharacter: React.FC<CartoonCharacterProps> = ({
           id="torso-group"
           transform={`translate(0, ${breathY}) rotate(${bodyLean} 270 540)`}
         >
-          {/* Back of Collar / Hood Rim (Behind Neck, anchors neck into torso!) */}
+          {/* Back of Collar / Hood Rim (Behind Neck) */}
           <path
-            d="M 200 240 Q 270 280 340 240 Q 360 300 270 305 Q 180 300 200 240 Z"
+            d="M 195 235 Q 270 280 345 235 Q 365 305 270 310 Q 175 305 195 235 Z"
             fill="url(#charHoodieDark)"
           />
 
           {/* Broad Natural Anatomical Shoulders & Torso Body */}
           <path
-            d="M 200 250
-               C 150 260, 115 310, 120 400
+            d="M 195 245
+               C 145 255, 115 310, 120 400
                L 155 550
                L 385 550
                L 420 400
-               C 425 310, 390 260, 340 250
-               Q 270 285 200 250 Z"
+               C 425 310, 395 255, 345 245
+               Q 270 280 195 245 Z"
             fill="url(#charHoodieMain)"
             filter="url(#charDropShadow)"
           />
@@ -239,26 +239,18 @@ export const CartoonCharacter: React.FC<CartoonCharacterProps> = ({
         ======================================================== */}
         <g
           id="head-neck-unit"
-          transform={`translate(0, ${breathY}) translate(270, 250) rotate(${headTilt + bodyLean}) translate(-270, -250)`}
+          transform={`translate(0, ${breathY + 18}) translate(270, 250) rotate(${headTilt + bodyLean}) translate(-270, -250)`}
           style={{ transformOrigin: "270px 250px" }}
         >
-          {/* Robust Anatomical Neck descending DEEPLY into hoodie collar */}
+          {/* Deep Anatomical Neck extending well past collar down to y:310 */}
           <path
-            d="M 240 185 L 235 265 Q 270 275 305 265 L 300 185 Z"
+            d="M 232 185 L 228 310 Q 270 325 312 310 L 308 185 Z"
             fill="url(#charSkinGrad)"
           />
           {/* Neck Shadow beneath chin */}
           <path
-            d="M 238 185 Q 270 220 302 185 L 303 215 Q 270 245 237 215 Z"
+            d="M 232 185 Q 270 220 308 185 L 308 220 Q 270 250 232 220 Z"
             fill="url(#charNeckShadow)"
-          />
-
-          {/* Front Collar Rim (Overlaps the base of the neck, making floating impossible!) */}
-          <path
-            d="M 225 248 Q 270 275 315 248 Q 270 262 225 248 Z"
-            fill="#FF7A00"
-            stroke="#D84315"
-            strokeWidth="3"
           />
 
           {/* Stylized Cartoon Ears */}
@@ -580,7 +572,7 @@ export const CartoonCharacter: React.FC<CartoonCharacterProps> = ({
 
         {/* POSE 4: SITTING TYPING PANIC (Frantic alternating typing arms) */}
         {pose === "sitting_typing_panic" && (
-          <g id="arms-panic-typing">
+          <g id="arms-panic-typing" transform="translate(0, 35)">
             {/* Left Arm hammering keys */}
             <path
               d="M 150 270 C 100 360, 110 440, 160 455 L 210 440 C 175 390, 180 340, 205 280 Z"

@@ -7,6 +7,10 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { CharacterActionScene } from "../compositions/CharacterActionScene";
+import { MacroObjectScene } from "../compositions/MacroObjectScene";
+import { SplitComparisonScene } from "../compositions/SplitComparisonScene";
+import { VisualMetaphorScene } from "../compositions/VisualMetaphorScene";
 import { KineticHeadline } from "../motion/KineticHeadline";
 import { KineticSubtitle } from "../motion/KineticSubtitle";
 import { theme } from "../theme";
@@ -113,19 +117,116 @@ export const MainVideo: React.FC<RenderProps> = ({
         transformOrigin: "center center",
       }}
     >
-      {/* 1. 2.5D Staged Scene: Layered Environment (Pan) + Actor (Parallax & Spring) */}
-      <StagedScene
-        environmentAsset={activeScene.environment_asset}
-        actorAsset={activeScene.actor_asset}
-        visualCue={activeScene.visual_cue || activeScene.visual}
-        objects={activeScene.objects || []}
-        text={activeScene.text}
-        sceneIndex={activeScene.index}
-        channelId={channel_id || "otak-receh"}
-        themeColor={theme_color || "#FF7A00"}
-        sceneLocalFrame={sceneLocalFrame}
-        sceneDurationFrames={sceneDurationFrames}
-      />
+      {/* 1. Dynamic Scene Composition Selection */}
+      {(() => {
+        const hasCustomAsset = Boolean(
+          (activeScene.environment_asset && activeScene.environment_asset.trim()) ||
+          (activeScene.actor_asset && activeScene.actor_asset.trim())
+        );
+
+        // If custom user-uploaded asset is provided, use StagedScene
+        if (hasCustomAsset) {
+          return (
+            <StagedScene
+              environmentAsset={activeScene.environment_asset}
+              actorAsset={activeScene.actor_asset}
+              visualCue={activeScene.visual_cue || activeScene.visual}
+              objects={activeScene.objects || []}
+              text={activeScene.text}
+              sceneIndex={activeScene.index}
+              channelId={channel_id || "otak-receh"}
+              themeColor={theme_color || "#FF7A00"}
+              sceneLocalFrame={sceneLocalFrame}
+              sceneDurationFrames={sceneDurationFrames}
+            />
+          );
+        }
+
+        const comp = (activeScene.composition || "").toLowerCase();
+        const shot = (activeScene.shot_type || activeScene.camera_shot || "").toLowerCase();
+        const cue = (activeScene.visual_cue || activeScene.visual || "").toLowerCase();
+
+        // 1. Macro Object Scene (Clock, Smartphone, Calendar, etc.)
+        if (
+          comp === "macro_inspection" ||
+          shot.includes("macro") ||
+          shot.includes("clock") ||
+          cue.includes("alarm") ||
+          cue.includes("kalender") ||
+          cue.includes("jam")
+        ) {
+          return (
+            <MacroObjectScene
+              props={activeScene.props || []}
+              visualCue={cue}
+              sceneLocalFrame={sceneLocalFrame}
+              sceneDurationFrames={sceneDurationFrames}
+              themeColor={theme_color || "#FF7A00"}
+            />
+          );
+        }
+
+        // 2. Visual Metaphor Scene (Dopamine battery, brain with sunglasses, scale)
+        if (
+          comp === "visual_metaphor" ||
+          cue.includes("dopamine") ||
+          cue.includes("dopamin") ||
+          cue.includes("timbang") ||
+          cue.includes("scale")
+        ) {
+          return (
+            <VisualMetaphorScene
+              visualCue={cue}
+              sceneLocalFrame={sceneLocalFrame}
+              sceneDurationFrames={sceneDurationFrames}
+              themeColor={theme_color || "#FF7A00"}
+            />
+          );
+        }
+
+        // 3. Split Comparison Scene
+        if (comp === "split_comparison" || cue.includes("vs") || cue.includes("split")) {
+          return (
+            <SplitComparisonScene
+              sceneLocalFrame={sceneLocalFrame}
+              sceneDurationFrames={sceneDurationFrames}
+              themeColor={theme_color || "#FF7A00"}
+            />
+          );
+        }
+
+        // 4. Character Action Scene (Default for Otak Receh & dynamic storytelling)
+        if (channel_id === "otak-receh" || comp === "character_action" || activeScene.character_action) {
+          return (
+            <CharacterActionScene
+              characterAction={activeScene.character_action || cue || "sitting_bored"}
+              expression={activeScene.expression || "bored"}
+              shotType={shot || "medium"}
+              cameraMotion={activeScene.camera_motion || "zoom_punch"}
+              environment={activeScene.environment || "bedroom_night"}
+              sceneLocalFrame={sceneLocalFrame}
+              sceneDurationFrames={sceneDurationFrames}
+              themeColor={theme_color || "#FF7A00"}
+            />
+          );
+        }
+
+        // Fallback for historical/scientific channels (Santri AI / Oddly Known)
+        return (
+          <StagedScene
+            environmentAsset={activeScene.environment_asset}
+            actorAsset={activeScene.actor_asset}
+            visualCue={activeScene.visual_cue || activeScene.visual}
+            objects={activeScene.objects || []}
+            text={activeScene.text}
+            sceneIndex={activeScene.index}
+            channelId={channel_id || "otak-receh"}
+            themeColor={theme_color || "#FF7A00"}
+            sceneLocalFrame={sceneLocalFrame}
+            sceneDurationFrames={sceneDurationFrames}
+          />
+        );
+      })()}
 
       {/* 2. Top Kinetic Headline with Noir Case Tag & Red Recording Dot */}
       <KineticHeadline

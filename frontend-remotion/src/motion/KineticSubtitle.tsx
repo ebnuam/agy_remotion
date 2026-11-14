@@ -102,7 +102,7 @@ export const KineticSubtitle: React.FC<KineticSubtitleProps> = ({
             <span
               key={`chunk-${chunkIndex}-word-${idx}`}
               style={{
-                fontFamily: theme.fonts.display || "sans-serif",
+                fontFamily: theme.fonts.headline || "sans-serif",
                 fontSize: 50,
                 fontWeight: 900,
                 textTransform: "uppercase",
