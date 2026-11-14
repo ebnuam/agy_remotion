@@ -1,0 +1,33 @@
+{
+  "id": "oddly-known",
+  "display_name": "Oddly Known",
+  "language": "id-ID",
+  "voice": "id-ID-ArdiNeural",
+  "niche": "Science Facts & Curiosity",
+  "tone": "mysterious, scientific, mind-bending, intriguing",
+  "visual_template": "cosmic-blueprint",
+  "duration_target_seconds": 45,
+  "resolution": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "content_pillars": [
+    "deep_sea_mysteries",
+    "cosmic_anomalies",
+    "bizarre_biology",
+    "unexplained_phenomena"
+  ],
+  "visual_identity": {
+    "palette": {
+      "primary": "#00F0FF",
+      "secondary": "#8B5CF6",
+      "accent": "#F43F5E",
+      "background": "#030712",
+      "text": "#E2E8F0"
+    },
+    "style": "scifi_blueprint_infographic",
+    "motion_feel": "precision_hud_radar_track",
+    "typography": "scifi_technical_mono"
+  }
+}

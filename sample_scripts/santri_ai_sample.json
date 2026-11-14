@@ -1,0 +1,58 @@
+{
+  "channel_id": "santri-ai",
+  "title": "Al-Jazari: Ilmuwan Muslim Sang Bapak Robotika Dunia",
+  "hook": "Kamu pikir robot otomatis baru diciptakan abad modern? Salah besar!",
+  "narration": "Kamu pikir robot otomatis baru diciptakan abad modern? Salah besar! Delapan ratus tahun lalu di masa kejayaan Islam, seorang jenius bernama Ismail Al-Jazari sudah menciptakan robot pelayan dan jam gajah mekanik tercanggih di dunia. Menggunakan tenaga air dan roda gigi presisi, mesin buatannya bisa menuang teh sendiri dan memainkan musik otomatis tanpa bantuan listrik. Manuskrip mahakaryanya menjadi fondasi bagi teknologi otomasi dan robotika modern yang kita nikmati saat ini.",
+  "punchline": "Inspirasi peradaban Islam membuktikan: sains dan iman selalu melahirkan inovasi yang melampaui zaman.",
+  "theme_color": "#10B981",
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Kamu pikir robot otomatis baru diciptakan abad modern? Salah besar!",
+      "visual": "manuscript",
+      "visual_cue": "manuscript",
+      "tag": "FAKTA SEJARAH",
+      "headline_line1": "ROBOT PERTAMA",
+      "headline_line2": "DARI ABAD KE-12?",
+      "objects": ["ancient_scroll", "qandil_lantern", "golden_astrolabe"],
+      "camera_shot": "zoom-in",
+      "sound_cue": "deep_chime"
+    },
+    {
+      "index": 2,
+      "text": "Delapan ratus tahun lalu di masa kejayaan Islam, seorang jenius bernama Ismail Al-Jazari sudah menciptakan robot pelayan dan jam gajah mekanik tercanggih di dunia.",
+      "visual": "astrolabe",
+      "visual_cue": "astrolabe",
+      "tag": "TOKOH ISLAM",
+      "headline_line1": "ISMAIL AL-JAZARI",
+      "headline_line2": "BAPAK ROBOTIKA",
+      "objects": ["elephant_clock", "water_gear", "islamic_geometry"],
+      "camera_shot": "slow-orbit",
+      "sound_cue": "gear_ticking"
+    },
+    {
+      "index": 3,
+      "text": "Menggunakan tenaga air dan roda gigi presisi, mesin buatannya bisa menuang teh sendiri dan memainkan musik otomatis tanpa bantuan listrik.",
+      "visual": "mechanism",
+      "visual_cue": "mechanism",
+      "tag": "KEJAJAAN SAINS",
+      "headline_line1": "OTOMASI MEKANIK",
+      "headline_line2": "TENAGA HIDROLIK",
+      "objects": ["water_valve", "golden_cog", "manuscript_diagram"],
+      "camera_shot": "pan-up",
+      "sound_cue": "water_flow"
+    },
+    {
+      "index": 4,
+      "text": "Manuskrip mahakaryanya menjadi fondasi bagi teknologi otomasi dan robotika modern yang kita nikmati saat ini.",
+      "visual": "manuscript",
+      "visual_cue": "manuscript",
+      "tag": "WARISAN DUNIA",
+      "headline_line1": "FONDASI MODERN",
+      "headline_line2": "DARI PERADABAN ISLAM",
+      "objects": ["golden_quill", "book_of_knowledge", "emerald_glow"],
+      "camera_shot": "wide-cinematic",
+      "sound_cue": "ethereal_pad"
+    }
+  ]
+}

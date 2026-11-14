@@ -1,0 +1,82 @@
+{
+  "channel_id": "otak-receh",
+  "title": "Kenapa Kita Suka Nunda Tugas Sampai Menit Terakhir?",
+  "hook": "Deadline besok jam 8 pagi, tapi jam 2 malam kamu malah asyik nonton video renovasi rumah orang asing?",
+  "narration": "Deadline besok jam 8 pagi, tapi jam 2 malam kamu malah asyik nonton video renovasi rumah orang asing? Tenang, kamu nggak sendirian dan bukan berarti kamu pemalas akut. Ini adalah ulah amigdala di otakmu yang lagi panik menghindari tugas sulit, lalu membajakmu buat nyari dopamin instan lewat scrolling medsos. Amigdala itu kayak balita yang ngambek kalau dipaksa mikir berat. Tapi begitu deadline tinggal hitungan menit, korteks prefrontal baru ngamuk dan ngirim sinyal darurat: KERJAKAN SEKARANG ATAU KELAR HIDUPMU! Jadi ingat, deadline bukan sumber inspirasi, tapi tombol panik penyelamat karier!",
+  "punchline": "Ingat ya kawan: Deadline itu tombol panik penyelamat karier, bukan sumber inspirasi!",
+  "theme_color": "#FF7A00",
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Deadline besok jam 8 pagi, tapi jam 2 malam kamu malah asyik nonton video renovasi rumah orang asing?",
+      "visual": "scrolling",
+      "visual_cue": "scrolling",
+      "tag": "FENOMENA KITA",
+      "headline_line1": "KENAPA SUKA",
+      "headline_line2": "NUNDA DEADLINE?",
+      "objects": ["smartphone", "notif_bubble", "jam_dinding"],
+      "camera_shot": "zoom-in",
+      "sound_cue": "whoosh"
+    },
+    {
+      "index": 2,
+      "text": "Tenang, kamu nggak sendirian dan bukan berarti kamu pemalas akut.",
+      "visual": "lazy",
+      "visual_cue": "lazy",
+      "tag": "FAKTA OTAK",
+      "headline_line1": "BUKAN MALAS",
+      "headline_line2": "TAPI AMIGDALA!",
+      "objects": ["brain_character", "sofa", "coffee_cup"],
+      "camera_shot": "medium-shot",
+      "sound_cue": "pop"
+    },
+    {
+      "index": 3,
+      "text": "Ini adalah ulah amigdala di otakmu yang lagi panik menghindari tugas sulit, lalu membajakmu buat nyari dopamin instan lewat scrolling medsos.",
+      "visual": "scrolling",
+      "visual_cue": "scrolling",
+      "tag": "BIOLOGI",
+      "headline_line1": "JEBAKAN",
+      "headline_line2": "DOPAMIN INSTAN",
+      "objects": ["dopamine_bottle", "brain_sunglasses", "phone_glow"],
+      "camera_shot": "pan-right",
+      "sound_cue": "bloop"
+    },
+    {
+      "index": 4,
+      "text": "Amigdala itu kayak balita yang ngambek kalau dipaksa mikir berat.",
+      "visual": "lazy",
+      "visual_cue": "lazy",
+      "tag": "METAFORA",
+      "headline_line1": "OTAK KITA",
+      "headline_line2": "KAYA BALITA NGAMBEK",
+      "objects": ["baby_brain", "candy", "alarm_clock"],
+      "camera_shot": "close-up",
+      "sound_cue": "giggle"
+    },
+    {
+      "index": 5,
+      "text": "Tapi begitu deadline tinggal hitungan menit, korteks prefrontal baru ngamuk dan ngirim sinyal darurat: KERJAKAN SEKARANG ATAU KELAR HIDUPMU!",
+      "visual": "panic",
+      "visual_cue": "panic",
+      "tag": "ALARM DARURAT",
+      "headline_line1": "MODE PANIK",
+      "headline_line2": "AKTIF SEKARANG!",
+      "objects": ["siren_red", "fire_sparks", "speed_lines"],
+      "camera_shot": "dramatic-zoom",
+      "sound_cue": "alarm_siren"
+    },
+    {
+      "index": 6,
+      "text": "Jadi ingat ya kawan, deadline itu tombol panik penyelamat karier, bukan sumber inspirasi!",
+      "visual": "default",
+      "visual_cue": "default",
+      "tag": "KESIMPULAN",
+      "headline_line1": "DEADLINE BUKAN",
+      "headline_line2": "SUMBER INSPIRASI!",
+      "objects": ["badge_check", "gold_sparkle", "thumbs_up"],
+      "camera_shot": "wide-outro",
+      "sound_cue": "impact_bell"
+    }
+  ]
+}

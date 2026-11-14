@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1920" width="1200" height="1920">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050B14"/>
+      <stop offset="45%" stop-color="#0D1B2A"/>
+      <stop offset="70%" stop-color="#1B263B"/>
+    </linearGradient>
+    <radialGradient id="lampGlow" cx="50%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#FEF08A" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#EAB308" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Night Sky & Buildings silhouette -->
+  <rect x="0" y="0" width="1200" height="1920" fill="url(#skyGrad)"/>
+  <rect x="0" y="400" width="1200" height="600" fill="url(#lampGlow)"/>
+  
+  <!-- Asphalt Ground -->
+  <path d="M 0 950 L 1200 950 L 1200 1920 L 0 1920 Z" fill="#0A0F1D"/>
+  <line x1="0" y1="950" x2="1200" y2="950" stroke="#1E293B" stroke-width="4"/>
+  
+  <!-- Parking Lot Painted White Lines (Isometric perspective) -->
+  <line x1="200" y1="1100" x2="100" y2="1850" stroke="#F8FAFC" stroke-width="12" stroke-linecap="round" opacity="0.85"/>
+  <line x1="600" y1="1100" x2="500" y2="1850" stroke="#F8FAFC" stroke-width="12" stroke-linecap="round" opacity="0.85"/>
+  <line x1="1000" y1="1100" x2="900" y2="1850" stroke="#F8FAFC" stroke-width="12" stroke-linecap="round" opacity="0.85"/>
+</svg>

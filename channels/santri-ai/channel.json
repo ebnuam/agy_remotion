@@ -1,0 +1,33 @@
+{
+  "id": "santri-ai",
+  "display_name": "Santri AI",
+  "language": "id-ID",
+  "voice": "id-ID-ArdiNeural",
+  "niche": "Islamic Knowledge & Storytelling",
+  "tone": "elegan, tenang, inspiratif, adab, mendalam",
+  "visual_template": "majestic-islamic",
+  "duration_target_seconds": 45,
+  "resolution": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "content_pillars": [
+    "sejarah_islam",
+    "hikmah_kehidupan",
+    "ilmuwan_muslim",
+    "adab_dan_akhlak"
+  ],
+  "visual_identity": {
+    "palette": {
+      "primary": "#047857",
+      "secondary": "#D97706",
+      "accent": "#FDE68A",
+      "background": "#022C22",
+      "text": "#FDF8F0"
+    },
+    "style": "serene_manuscript_geometric",
+    "motion_feel": "graceful_slow_pan_serene",
+    "typography": "classical_serif_calligraphic"
+  }
+}

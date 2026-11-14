@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Factory Studio · Automated AI Video Generator</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- TOP NAVBAR -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <div class="brand-icon">🎬</div>
+      <div>
+        <h1 class="brand-title">VIDEO FACTORY <span>STUDIO</span></h1>
+        <p class="brand-subtitle">Automated Cinematic Video Production</p>
+      </div>
+    </div>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="create">
+        <span class="tab-icon">✨</span> Create Video
+      </button>
+      <button class="nav-tab" data-tab="monitor">
+        <span class="tab-icon">⚡</span> Live Monitor
+        <span class="badge-pulse" id="activeJobIndicator" style="display:none;"></span>
+      </button>
+      <button class="nav-tab" data-tab="library">
+        <span class="tab-icon">🎞️</span> Video Library
+        <span class="badge-count" id="videoCountBadge">0</span>
+      </button>
+      <button class="nav-tab" data-tab="assets">
+        <span class="tab-icon">🖼️</span> Asset Manager
+        <span class="badge-count" id="assetCountBadge">0</span>
+      </button>
+      <button class="nav-tab" data-tab="system">
+        <span class="tab-icon">⚙️</span> System
+      </button>
+    </nav>
+
+    <!-- SYSTEM STATUS PILL -->
+    <div class="system-status">
+      <span class="status-dot"></span>
+      <span id="systemStatusText">Studio Online</span>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="main-container">
+    
+    <!-- ================================================================ -->
+    <!-- TAB 1: CREATE VIDEO -->
+    <!-- ================================================================ -->
+    <section class="tab-content active" id="tab-create">
+      <div class="content-header">
+        <h2>Produksi Video Baru</h2>
+        <p>Pilih identitas channel, masukkan ide atau naskah, dan biarkan AI Director menghasilkan video motion graphics profesional.</p>
+      </div>
+
+      <!-- CHANNEL SELECTOR CARDS -->
+      <div class="form-group">
+        <label class="form-label">1. Pilih Identitas Channel</label>
+        <div class="channel-grid" id="channelGrid">
+          <!-- Otak Receh Card -->
+          <div class="channel-card active" data-channel="otak-receh">
+            <div class="channel-badge" style="background:#FF7A00;">PSIKOLOGI & HUMOR</div>
+            <div class="channel-header">
+              <span class="channel-icon">🧠</span>
+              <div>
+                <h3 class="channel-title">Otak Receh</h3>
+                <span class="channel-voice">Voice: id-ID-ArdiNeural (Pria)</span>
+              </div>
+            </div>
+            <p class="channel-desc">Visual playful, colorful, karakter kartun ekspresif, metafora dopamin/gadget, kinetic typography.</p>
+          </div>
+
+          <!-- Santri AI Card -->
+          <div class="channel-card" data-channel="santri-ai">
+            <div class="channel-badge" style="background:#10B981;">SEJARAH & SAINS ISLAM</div>
+            <div class="channel-header">
+              <span class="channel-icon">🕌</span>
+              <div>
+                <h3 class="channel-title">Santri AI</h3>
+                <span class="channel-voice">Voice: id-ID-ArdiNeural</span>
+              </div>
+            </div>
+            <p class="channel-desc">Visual elegan, cinematic, manuskrip berornamen emas, astrolabe mekanik, lentera qandil, sejarah peradaban Islam.</p>
+          </div>
+
+          <!-- Oddly Known Card -->
+          <div class="channel-card" data-channel="oddly-known">
+            <div class="channel-badge" style="background:#06B6D4;">FAKTA & KURIOSITAS</div>
+            <div class="channel-header">
+              <span class="channel-icon">🔭</span>
+              <div>
+                <h3 class="channel-title">Oddly Known</h3>
+                <span class="channel-voice">Voice: id-ID-ArdiNeural</span>
+              </div>
+            </div>
+            <p class="channel-desc">Visual misterius, radar sonar, spektrogram 52 Hz, diagram ilmiah, HUD telemetri kosmik, fenomena anomali.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCRIPT MODE TOGGLE -->
+      <div class="form-group">
+        <label class="form-label">2. Mode Pembuatan Naskah</label>
+        <div class="mode-toggle-group">
+          <button type="button" class="mode-btn active" id="btnModeAI">
+            <span>🤖</span> AI Director (Otomatis dari Ide/Topik)
+          </button>
+          <button type="button" class="mode-btn" id="btnModeManual">
+            <span>📝</span> Naskah Manual JSON (Hemat 100% Token)
+          </button>
+        </div>
+      </div>
+
+      <!-- AI PROMPT INPUT SECTION -->
+      <div class="form-group" id="sectionAIPrompt">
+        <label class="form-label">3. Masukkan Topik atau Ide Cerita</label>
+        <textarea
+          id="inputTopic"
+          class="form-textarea"
+          rows="3"
+          placeholder="Contoh: Kenapa kita sering mengingat kejadian memalukan sebelum tidur?"
+        >Kenapa kita sering mengingat kejadian memalukan sebelum tidur?</textarea>
+        
+        <!-- QUICK PROMPT SUGGESTIONS -->
+        <div class="quick-pills">
+          <span class="pill-label">💡 Ide Cepat:</span>
+          <button type="button" class="pill-btn" data-topic="Kenapa kita sering mengingat kejadian memalukan sebelum tidur?">
+            Memori Memalukan Sebelum Tidur 💤
+          </button>
+          <button type="button" class="pill-btn" data-topic="Kenapa waktu terasa jauh lebih cepat saat kita bersenang-senang?">
+            Waktu Cepat Saat Senang ⏳
+          </button>
+          <button type="button" class="pill-btn" data-topic="Al-Jazari: Ilmuwan Muslim Sang Bapak Robotika Dunia">
+            Al-Jazari Robotika Islam ⚙️
+          </button>
+          <button type="button" class="pill-btn" data-topic="Paus 52 Hertz: Makhluk Paling Kesepian di Samudra">
+            Paus 52 Hertz 🐋
+          </button>
+        </div>
+      </div>
+
+      <!-- MANUAL SCRIPT JSON INPUT SECTION (HIDDEN BY DEFAULT) -->
+      <div class="form-group" id="sectionManualScript" style="display: none;">
+        <label class="form-label">3. Paste RAW Script JSON</label>
+        <textarea
+          id="inputManualJSON"
+          class="form-textarea font-mono"
+          rows="8"
+          placeholder='{"title": "...", "hook": "...", "narration": "...", "scenes": [...]}'
+        ></textarea>
+        <div class="form-hint">
+          Format JSON harus valid sesuai panduan. Detik <code>start_seconds</code> akan dihitung otomatis oleh sistem TTS.
+        </div>
+      </div>
+
+      <!-- PRODUCTION SETTINGS ROW -->
+      <div class="form-row">
+        <!-- Duration -->
+        <div class="form-col">
+          <label class="form-label">Target Durasi</label>
+          <select id="selectDuration" class="form-select">
+            <option value="45" selected>~45 Detik (Shorts/Reels Ideal)</option>
+            <option value="60">~60 Detik (Storytelling Lengkap)</option>
+            <option value="30">~30 Detik (Quick Bite)</option>
+          </select>
+        </div>
+
+        <!-- Aspect Ratio -->
+        <div class="form-col">
+          <label class="form-label">Format Video</label>
+          <select id="selectRatio" class="form-select">
+            <option value="9:16" selected>Vertikal 9:16 (1080 × 1920)</option>
+            <option value="16:9">Landscape 16:9 (1920 × 1080)</option>
+          </select>
+        </div>
+
+        <!-- Voice Selector -->
+        <div class="form-col">
+          <label class="form-label">Pengisi Suara (TTS)</label>
+          <select id="selectVoice" class="form-select">
+            <option value="id-ID-ArdiNeural" selected>id-ID-ArdiNeural (Pria Indonesia Natural)</option>
+            <option value="id-ID-GadisNeural">id-ID-GadisNeural (Wanita Indonesia Ramah)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTON -->
+      <div class="action-bar">
+        <button type="button" class="btn-generate" id="btnGenerate">
+          <span class="btn-icon">🚀</span> MULAI GENERATE VIDEO SEKARANG
+        </button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 2: LIVE MONITOR -->
+    <!-- ================================================================ -->
+    <section class="tab-content" id="tab-monitor">
+      <div class="content-header">
+        <h2>Live Production Monitor</h2>
+        <p>Pantau pipeline produksi video secara real-time dari konseptualisasi naskah hingga video rendering.</p>
+      </div>
+
+      <div class="monitor-layout">
+        <!-- LEFT: PRODUCTION STEPPER -->
+        <div class="monitor-left">
+          <div class="card">
+            <div class="card-header">
+              <h3 id="monitorJobTitle">Belum ada job aktif</h3>
+              <span class="badge" id="monitorJobChannel">STANDBY</span>
+            </div>
+
+            <!-- OVERALL PROGRESS BAR -->
+            <div class="progress-container">
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="monitorProgressBar" style="width: 0%;"></div>
+              </div>
+              <div class="progress-info">
+                <span id="monitorStatusText">Menunggu perintah...</span>
+                <span id="monitorPercentText">0%</span>
+              </div>
+            </div>
+
+            <!-- STEPPER LIST -->
+            <div class="stepper-list" id="stepperList">
+              <div class="step-item" data-step="1">
+                <div class="step-circle">1</div>
+                <div class="step-body">
+                  <h4>Merumuskan Konsep & Hook</h4>
+                  <p>AI Director menyusun konsep dan hook 3 detik pertama</p>
+                </div>
+              </div>
+
+              <div class="step-item" data-step="2">
+                <div class="step-circle">2</div>
+                <div class="step-body">
+                  <h4>Penyusunan Script & Storyboard</h4>
+                  <p>Memecah narasi ke adegan dengan visual cue dan kinetic headline</p>
+                </div>
+              </div>
+
+              <div class="step-item" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-body">
+                  <h4>Sintesis Audio Voiceover</h4>
+                  <p>Edge TTS menghasilkan audio narasi kualitas neural studio</p>
+                </div>
+              </div>
+
+              <div class="step-item" data-step="4">
+                <div class="step-circle">4</div>
+                <div class="step-body">
+                  <h4>Penyelarasan Durasi & Timing Adegan</h4>
+                  <p>Mutagen mengukur durasi audio dan menyinkronkan detik per scene</p>
+                </div>
+              </div>
+
+              <div class="step-item" data-step="5">
+                <div class="step-circle">5</div>
+                <div class="step-body">
+                  <h4>Rendering Video Remotion (1080×1920)</h4>
+                  <p>Merender motion graphics, atmospheric background, dan karaoke subtitle</p>
+                </div>
+              </div>
+
+              <div class="step-item" data-step="6">
+                <div class="step-circle">6</div>
+                <div class="step-body">
+                  <h4>Automated Quality Control (QC)</h4>
+                  <p>Verifikasi integritas audio, durasi, dan ukuran MP4</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- RESULT ACTION BOX -->
+            <div class="result-box" id="monitorResultBox" style="display: none;">
+              <div class="result-message">🎉 Video Berhasil Diproduksi!</div>
+              <div class="result-actions">
+                <button type="button" class="btn-primary" id="btnPreviewResult">
+                  ▶ Tonton Preview Video
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: LIVE TERMINAL LOGS -->
+        <div class="monitor-right">
+          <div class="terminal-card">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="dot-red"></span>
+                <span class="dot-yellow"></span>
+                <span class="dot-green"></span>
+              </div>
+              <span class="terminal-title">PRODUCTION LOG CONSOLE</span>
+              <button class="btn-clear-log" id="btnClearLog">Clear</button>
+            </div>
+            <div class="terminal-body" id="terminalLogs">
+              <div class="log-line text-muted">[SYSTEM] Studio log initialized. Menunggu pemicu job...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 3: VIDEO LIBRARY -->
+    <!-- ================================================================ -->
+    <section class="tab-content" id="tab-library">
+      <div class="content-header">
+        <h2>Perpustakaan Video Hasil</h2>
+        <p>Koleksi seluruh video yang telah berhasil diproduksi di workspace Anda.</p>
+      </div>
+
+      <div class="library-grid" id="libraryGrid">
+        <!-- Rendered dynamically via JavaScript -->
+        <div class="empty-state">
+          <p>Memuat daftar video...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 4: ASSET MANAGER (2.5D WORLD-BUILDING CMS) -->
+    <!-- ================================================================ -->
+    <section class="tab-content" id="tab-assets">
+      <div class="content-header">
+        <h2>Asset Manager & World-Building CMS</h2>
+        <p>Kelola aset latar belakang (Environment) dan karakter/objek (Actor) untuk compositing 2.5D Parallax di video Anda.</p>
+      </div>
+
+      <!-- DRAG & DROP UPLOAD ZONE -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="dropzone" id="assetDropzone">
+          <input type="file" id="assetFileInput" accept=".png,.jpg,.jpeg,.svg,.json" multiple style="display: none;">
+          <div class="dropzone-icon">☁️ ⬆️</div>
+          <h3 class="dropzone-title">Seret & Lepas File Aset di Sini</h3>
+          <p class="dropzone-desc">atau <span class="dropzone-browse">klik untuk memilih file</span> dari komputer Anda</p>
+          <div class="dropzone-tags">
+            <span class="tag-pill">.PNG</span>
+            <span class="tag-pill">.JPG / .JPEG</span>
+            <span class="tag-pill">.SVG</span>
+            <span class="tag-pill">.JSON (Lottie)</span>
+          </div>
+          <p class="form-hint" style="margin-top: 14px;">File akan otomatis disimpan dan disanitasi ke <code>frontend-remotion/public/assets/</code></p>
+        </div>
+      </div>
+
+      <!-- ASSET GALLERY -->
+      <div class="asset-section-header">
+        <h3>Koleksi Aset Tersimpan (<span id="assetTotalCount">0</span>)</h3>
+        <button class="btn-refresh-assets" id="btnRefreshAssets">🔄 Segarkan Daftar</button>
+      </div>
+
+      <div class="asset-grid" id="assetGrid">
+        <div class="empty-state">
+          <p>Memuat koleksi aset...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 5: SYSTEM SETTINGS -->
+    <!-- ================================================================ -->
+    <section class="tab-content" id="tab-system">
+      <div class="content-header">
+        <h2>Informasi & Konfigurasi Sistem</h2>
+        <p>Status integrasi AGYBridge, Edge TTS, Remotion CLI, dan direktori workspace.</p>
+      </div>
+
+      <div class="system-grid">
+        <div class="card">
+          <h3 class="card-title">Komponen Inti</h3>
+          <ul class="system-list">
+            <li>
+              <span>Backend Engine</span>
+              <strong class="text-green">Golang 1.23 (Native High-Speed Server)</strong>
+            </li>
+            <li>
+              <span>Video Renderer</span>
+              <strong class="text-green">Remotion 4.0 (Angle WebGL Renderer)</strong>
+            </li>
+            <li>
+              <span>AI Director Endpoint</span>
+              <strong class="text-blue">AGYBridge (gemini-3.8-flash-high)</strong>
+            </li>
+            <li>
+              <span>Voiceover TTS Engine</span>
+              <strong class="text-green">Microsoft Edge Neural TTS (Free Unlimited)</strong>
+            </li>
+            <li>
+              <span>Resolusi Produksi</span>
+              <strong>1080 × 1920 (9:16 Vertical) @ 30 FPS</strong>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Direktori Workspace</h3>
+          <ul class="system-list">
+            <li>
+              <span>Jobs Isolation Directory</span>
+              <code class="code-box">C:\Users\USER\Documents\REMOTION\jobs</code>
+            </li>
+            <li>
+              <span>Output Videos Directory</span>
+              <code class="code-box">C:\Users\USER\Documents\REMOTION\output</code>
+            </li>
+            <li>
+              <span>Remotion Project Path</span>
+              <code class="code-box">frontend-remotion/src/index.ts</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================================================================ -->
+  <!-- VIDEO PREVIEW MODAL -->
+  <!-- ================================================================ -->
+  <div class="modal-backdrop" id="videoModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalVideoTitle">Preview Video</h3>
+        <button class="modal-close" id="btnCloseModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="video-player-wrapper">
+          <video id="modalVideoPlayer" controls autoplay loop playsinline>
+            <source src="" type="video/mp4">
+            Browser Anda tidak mendukung tag video HTML5.
+          </video>
+        </div>
+        <div class="modal-sidebar">
+          <div class="meta-card">
+            <h4>Informasi Video</h4>
+            <div class="meta-row">
+              <span>Channel:</span>
+              <strong id="modalChannelName">-</strong>
+            </div>
+            <div class="meta-row">
+              <span>Durasi:</span>
+              <strong id="modalDuration">-</strong>
+            </div>
+            <div class="meta-row">
+              <span>Ukuran File:</span>
+              <strong id="modalFileSize">-</strong>
+            </div>
+            <div class="meta-row">
+              <span>Resolusi:</span>
+              <strong>1080 × 1920 (9:16)</strong>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <a href="#" class="btn-download" id="btnDownloadVideo" download>
+              ⬇ Unduh Video MP4
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

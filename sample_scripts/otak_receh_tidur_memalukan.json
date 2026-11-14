@@ -1,0 +1,70 @@
+{
+  "channel_id": "otak-receh",
+  "title": "Kenapa Ingat Hal Memalukan Sebelum Tidur?",
+  "hook": "Lampu kamar udah mati, mata udah merem, tapi jam dua pagi otakmu malah muter rekaman kejadian memalukan lima tahun lalu?",
+  "narration": "Lampu kamar udah mati, mata udah merem, tapi jam dua pagi otakmu malah asyik muter rekaman kejadian memalukan lima tahun lalu? Tenang, kamu nggak gila. Saat hening tanpa distraksi HP, jaringan Default Mode Network di otakmu otomatis aktif mengaduk-aduk memori emosional. Secara evolusi, amigdala purba kita berusaha memastikan kita belajar dari rasa malu masa lalu, biar nggak dikucilkan dari kelompok. Tapi faktanya kawan, orang lain bahkan nggak ingat kejadian itu, karena mereka juga lagi sibuk overthinking hal memalukan versi mereka sendiri!",
+  "punchline": "Tidurlah dengan damai kawan: orang lain terlalu sibuk mikirin diri sendiri buat mengingat salah sapamu!",
+  "theme_color": "#FF7A00",
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Lampu kamar udah mati, mata udah merem, tapi jam dua pagi otakmu malah asyik muter rekaman kejadian memalukan lima tahun lalu?",
+      "visual": "tidur_kamar",
+      "visual_cue": "tidur_kamar",
+      "tag": "FENOMENA MALAM",
+      "headline_line1": "KENAPA OTAK KITA",
+      "headline_line2": "SUSAH TIDUR?",
+      "objects": ["bed", "pillow", "clock_0214", "crescent_moon"],
+      "camera_shot": "slow-zoom",
+      "sound_cue": "clock_tick"
+    },
+    {
+      "index": 2,
+      "text": "Tenang, kamu nggak gila.",
+      "visual": "default",
+      "visual_cue": "default",
+      "tag": "FAKTA OTAK",
+      "headline_line1": "TENANG KAWAN",
+      "headline_line2": "KAMU NGGAK GILA!",
+      "objects": ["brain_character", "thumbs_up", "relief_smile"],
+      "camera_shot": "medium-shot",
+      "sound_cue": "pop"
+    },
+    {
+      "index": 3,
+      "text": "Saat hening tanpa distraksi HP, jaringan Default Mode Network di otakmu otomatis aktif mengaduk-aduk memori emosional.",
+      "visual": "memory_cringe",
+      "visual_cue": "memory_cringe",
+      "tag": "NEUROSAINS",
+      "headline_line1": "PROYEKTOR MEMORI",
+      "headline_line2": "MENGADUK RASA MALU",
+      "objects": ["vintage_projector", "film_reel", "cringe_badge", "blush_cheeks"],
+      "camera_shot": "pan-right",
+      "sound_cue": "projector_whir"
+    },
+    {
+      "index": 4,
+      "text": "Secara evolusi, amigdala purba kita berusaha memastikan kita belajar dari rasa malu masa lalu, biar nggak dikucilkan dari kelompok.",
+      "visual": "evolusi_shield",
+      "visual_cue": "evolusi_shield",
+      "tag": "EVOLUSI SURVIVAL",
+      "headline_line1": "AMIGDALA PURBA",
+      "headline_line2": "MODE PERLINDUNGAN",
+      "objects": ["golden_shield", "caveman_brain", "radar_rings"],
+      "camera_shot": "dramatic-push",
+      "sound_cue": "shield_impact"
+    },
+    {
+      "index": 5,
+      "text": "Tapi faktanya kawan, orang lain bahkan nggak ingat kejadian itu, karena mereka juga lagi sibuk overthinking hal memalukan versi mereka sendiri!",
+      "visual": "panic",
+      "visual_cue": "panic",
+      "tag": "FAKTA MENGEJUTKAN",
+      "headline_line1": "ORANG LAIN",
+      "headline_line2": "NGGAK PEDULI!",
+      "objects": ["screaming_clock", "hazard_beams", "sweat_drops"],
+      "camera_shot": "wide-outro",
+      "sound_cue": "chime_bell"
+    }
+  ]
+}

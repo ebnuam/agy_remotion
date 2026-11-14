@@ -1,0 +1,91 @@
+{
+  "title": "Misteri Paus 52 Hertz",
+  "hook": "Pernahkah kamu mendengar tentang makhluk paling kesepian di dunia?",
+  "narration": "Di kedalaman samudra Pasifik, militer Amerika menangkap sinyal suara misterius. Suara itu bergetar di frekuensi 52 Hertz yang sangat aneh. Paus biru normal hanya bernyanyi di frekuensi 15 hingga 25 Hertz. Artinya tidak ada satu pun paus lain di bumi yang bisa mendengar panggilannya. Sejak tahun 1989, paus ini mengarungi samudra luas sendirian. Rekaman hidrofon mencatat panggilannya tak pernah dijawab oleh siapa pun. Manusia belum pernah melihat wujud fisik raksasa misterius ini. Dia terus bernyanyi di kegelapan samudra, sang pengembara paling sunyi.",
+  "punchline": "Terkadang bernyanyi sendirian adalah bukti ketahanan yang luar biasa.",
+  "theme_color": "#06B6D4",
+  "channel_id": "oddly-known",
+  "channel_name": "Oddly Known",
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Di kedalaman samudra Pasifik, sistem sonar militer menangkap sinyal aneh tak dikenal.",
+      "tag": "SINYAL MISTERI #52",
+      "headline_line1": "ANOMALI SAMUDRA:",
+      "headline_line2": "SINYAL MISTERIUS",
+      "visual_cue": "radar_sonar",
+      "camera_shot": "zoom_punch",
+      "sound_cue": "sonar"
+    },
+    {
+      "index": 2,
+      "text": "Suara itu bergetar pada frekuensi persis 52 Hertz, nada yang belum pernah ada.",
+      "tag": "FREKUENSI GHAIB",
+      "headline_line1": "52 HERTZ FREKUENSI,",
+      "headline_line2": "NADA PALING GANJIL",
+      "visual_cue": "spectrogram",
+      "camera_shot": "tracking",
+      "sound_cue": "beep"
+    },
+    {
+      "index": 3,
+      "text": "Paus biru normal hanya bernyanyi rendah di kisaran 15 hingga 25 Hertz.",
+      "tag": "PERBANDINGAN AKUSTIK",
+      "headline_line1": "PAUS LAIN: 15 HZ,",
+      "headline_line2": "DIA BERSUARA TINGGI!",
+      "visual_cue": "timbangan_vs",
+      "camera_shot": "pull_reveal",
+      "sound_cue": "chime"
+    },
+    {
+      "index": 4,
+      "text": "Tragisnya, tidak ada satu pun makhluk laut lain yang mampu mendengar panggilannya.",
+      "tag": "KUTUKAN KESUNYIAN",
+      "headline_line1": "TERIAKAN HAMPA,",
+      "headline_line2": "TAK ADA YANG MENDENGAR",
+      "visual_cue": "whale_anomaly",
+      "camera_shot": "pan_left",
+      "sound_cue": "wind"
+    },
+    {
+      "index": 5,
+      "text": "Sejak pertama kali terdeteksi tahun 1989, dia berenang ribuan mil sendirian.",
+      "tag": "TIMELINE TAHUN 1989",
+      "headline_line1": "PENGEMBARAAN PANJANG:",
+      "headline_line2": "SEJAK TAHUN 1989",
+      "visual_cue": "kalender_deadline",
+      "camera_shot": "tracking",
+      "sound_cue": "pop"
+    },
+    {
+      "index": 6,
+      "text": "Berkas data sonar membuktikan tidak ada kawanan yang pernah menemaninya.",
+      "tag": "BERKAS RAHASIA",
+      "headline_line1": "DOSSIER HIDROFON:",
+      "headline_line2": "BUKTI TANPA KAWAN",
+      "visual_cue": "polaroid_tersangka",
+      "camera_shot": "zoom_punch",
+      "sound_cue": "shutter"
+    },
+    {
+      "index": 7,
+      "text": "Hingga hari ini, manusia belum pernah sekali pun melihat wujud fisiknya secara langsung.",
+      "tag": "WUJUD GHAIB",
+      "headline_line1": "RAKSASA SAMUDRA,",
+      "headline_line2": "TAK PERNAH TERLIHAT",
+      "visual_cue": "whale_anomaly",
+      "camera_shot": "pan_right",
+      "sound_cue": "deep_hum"
+    },
+    {
+      "index": 8,
+      "text": "Menjadikannya makhluk paling kesepian yang pernah bernapas di muka bumi ini.",
+      "tag": "FAKTA DUNIA",
+      "headline_line1": "PAUS PALING SUNYI,",
+      "headline_line2": "DI SELURUH SEMESTA",
+      "visual_cue": "radar_sonar",
+      "camera_shot": "pull_reveal",
+      "sound_cue": "sonar"
+    }
+  ]
+}

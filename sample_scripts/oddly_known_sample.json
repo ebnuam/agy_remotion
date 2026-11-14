@@ -1,0 +1,58 @@
+{
+  "channel_id": "oddly-known",
+  "title": "Paus 52 Hertz: Makhluk Paling Kesepian di Samudra",
+  "hook": "Di kedalaman samudra luas, ada satu suara nyanyian yang tidak pernah bisa didengar oleh siapa pun.",
+  "narration": "Di kedalaman samudra luas, ada satu suara nyanyian yang tidak pernah bisa didengar oleh siapa pun. Ini adalah paus 52 Hertz, sering disebut sebagai paus paling kesepian di dunia. Normalnya, paus biru berkomunikasi pada frekuensi 15 sampai 20 Hertz. Tapi makhluk misterius ini bersuara pada 52 Hertz, frekuensi yang terlalu tinggi untuk dimengerti oleh paus lainnya. Selama puluhan tahun ia berenang ribuan mil melintasi samudra, memanggil dan menunggu jawaban yang tidak pernah datang.",
+  "punchline": "Sebuah anomali biologis yang mengajarkan kita tentang arti kesunyian kosmis di bumi.",
+  "theme_color": "#06B6D4",
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Di kedalaman samudra luas, ada satu suara nyanyian yang tidak pernah bisa didengar oleh siapa pun.",
+      "visual": "radar",
+      "visual_cue": "radar",
+      "tag": "MISTERI SAMUDRA",
+      "headline_line1": "NYANYIAN PALING",
+      "headline_line2": "KESEPIAN DI BUMI",
+      "objects": ["sonar_hud", "deep_sea_depth", "cyan_contour"],
+      "camera_shot": "slow-pan-down",
+      "sound_cue": "hydrophone_ping"
+    },
+    {
+      "index": 2,
+      "text": "Ini adalah paus 52 Hertz, sering disebut sebagai paus paling kesepian di dunia.",
+      "visual": "spectrogram",
+      "visual_cue": "spectrogram",
+      "tag": "ANOMALI SUARA",
+      "headline_line1": "PAUS 52 HERTZ",
+      "headline_line2": "IDENTITAS MISTERIUS",
+      "objects": ["frequency_wave", "telemetry_box", "coordinates"],
+      "camera_shot": "center-zoom",
+      "sound_cue": "frequency_whine"
+    },
+    {
+      "index": 3,
+      "text": "Normalnya, paus biru berkomunikasi pada frekuensi 15 sampai 20 Hertz. Tapi makhluk misterius ini bersuara pada 52 Hertz, frekuensi yang terlalu tinggi untuk dimengerti oleh paus lainnya.",
+      "visual": "diagram",
+      "visual_cue": "diagram",
+      "tag": "PERBANDINGAN FREKUENSI",
+      "headline_line1": "15-20 HZ VS 52 HZ",
+      "headline_line2": "TAK ADA YANG MENDENGAR",
+      "objects": ["comparison_bars", "soundwave_chart", "hud_crosshair"],
+      "camera_shot": "split-track",
+      "sound_cue": "sonar_pulse"
+    },
+    {
+      "index": 4,
+      "text": "Selama puluhan tahun ia berenang ribuan mil melintasi samudra, memanggil dan menunggu jawaban yang tidak pernah datang.",
+      "visual": "radar",
+      "visual_cue": "radar",
+      "tag": "EKSPLORASI",
+      "headline_line1": "PANGGILAN ABADI",
+      "headline_line2": "TANPA JAWABAN",
+      "objects": ["ocean_map", "tracking_pin", "pulsing_sonar"],
+      "camera_shot": "infinite-drift",
+      "sound_cue": "low_ocean_drone"
+    }
+  ]
+}

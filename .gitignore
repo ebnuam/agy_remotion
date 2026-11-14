@@ -1,0 +1,42 @@
+# Environment variables & secrets
+.env
+*.env.local
+
+# Build outputs & executables
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+dist/
+build/
+bin/
+
+# Temporary work directories
+jobs/
+output/
+reference/*.mp4
+reference/frames/
+frontend-remotion/public/audio-*.mp3
+
+# Node dependencies & caches
+node_modules/
+.npm/
+.turbo/
+package-lock.json
+
+# Remotion renders & caches
+.remotion/
+
+# Python VirtualEnv & caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# IDE & OS files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store

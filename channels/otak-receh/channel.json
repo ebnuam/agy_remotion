@@ -1,0 +1,33 @@
+{
+  "id": "otak-receh",
+  "display_name": "OtakReceh",
+  "language": "id-ID",
+  "voice": "id-ID-ArdiNeural",
+  "niche": "Psychology & Everyday Humor",
+  "tone": "santai, jenaka, relatable, tidak menggurui",
+  "visual_template": "playful-pop",
+  "duration_target_seconds": 40,
+  "resolution": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "content_pillars": [
+    "psychology",
+    "everyday_humor",
+    "habit_loops",
+    "dopamine_traps"
+  ],
+  "visual_identity": {
+    "palette": {
+      "primary": "#FF7A00",
+      "secondary": "#06B6D4",
+      "accent": "#FACC15",
+      "background": "#0F172A",
+      "text": "#FFFFFF"
+    },
+    "style": "playful_pop_cartoon",
+    "motion_feel": "bouncy_snappy_comic",
+    "typography": "heavy_rounded_sans"
+  }
+}

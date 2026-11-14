@@ -1,0 +1,70 @@
+{
+  "channel_id": "otak-receh",
+  "title": "Kenapa Waktu Terasa Cepat Saat Senang?",
+  "hook": "Lagi asyik main game empat jam berasa cuma sepuluh menit, tapi nunggu antrean lima menit berasa kayak lima abad?",
+  "narration": "Lagi asyik main game empat jam berasa cuma sepuluh menit, tapi nunggu antrean lima menit berasa kayak lima abad? Selamat datang di ilusi waktu amigdala dan dopamin! Saat kamu bahagia dan fokus, pelepasan dopamin mempercepat interval detak internal otakmu, bikin kamu jarang ngecek jam. Sebaliknya, saat bosan atau tersiksa, otakmu menghitung setiap mikrodetik demi menyelamatkan diri. Jadi rumus simpelnya: Waktu bukan cuma hitungan jam dinding, tapi seberapa banyak dopamin yang lagi ngalir di kepalamu!",
+  "punchline": "Ingat: Jam dinding itu cuma alat ukur fisika, tapi rasa bahagiamu yang menentukan kecepatan hidup!",
+  "theme_color": "#FF7A00",
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Lagi asyik main game empat jam berasa cuma sepuluh menit, tapi nunggu antrean lima menit berasa kayak lima abad?",
+      "visual": "scrolling",
+      "visual_cue": "scrolling",
+      "tag": "PARADOKS WAKTU",
+      "headline_line1": "4 JAM BERASA",
+      "headline_line2": "10 MENIT?",
+      "objects": ["spinning_clock", "game_controller", "hourglass"],
+      "camera_shot": "fast-zoom",
+      "sound_cue": "whoosh"
+    },
+    {
+      "index": 2,
+      "text": "Selamat datang di ilusi waktu amigdala dan dopamin!",
+      "visual": "brain_dopamine",
+      "visual_cue": "brain_dopamine",
+      "tag": "BIOLOGI OTAK",
+      "headline_line1": "ILUSI WAKTU &",
+      "headline_line2": "BANJIR DOPAMIN",
+      "objects": ["brain_character", "dopamine_pill", "spark_rays"],
+      "camera_shot": "medium-shot",
+      "sound_cue": "sparkle"
+    },
+    {
+      "index": 3,
+      "text": "Saat kamu bahagia dan fokus, pelepasan dopamin mempercepat interval detak internal otakmu, bikin kamu jarang ngecek jam.",
+      "visual": "lazy",
+      "visual_cue": "lazy",
+      "tag": "PROSES INTERNAL",
+      "headline_line1": "FOKUS BAHAGIA",
+      "headline_line2": "LUPA LIHAT JAM",
+      "objects": ["sunglasses_brain", "coffee_steam", "floating_z"],
+      "camera_shot": "pan-right",
+      "sound_cue": "bloop"
+    },
+    {
+      "index": 4,
+      "text": "Sebaliknya, saat bosan atau tersiksa, otakmu menghitung setiap mikrodetik demi menyelamatkan diri.",
+      "visual": "panic",
+      "visual_cue": "panic",
+      "tag": "MODE BOSAN",
+      "headline_line1": "MENGHITUNG DETIK",
+      "headline_line2": "PENUH SIKSAAN!",
+      "objects": ["screaming_clock", "sweat_drop", "fire_sparks"],
+      "camera_shot": "dramatic-push",
+      "sound_cue": "alarm_beep"
+    },
+    {
+      "index": 5,
+      "text": "Jadi rumus simpelnya: Waktu bukan cuma hitungan jam dinding, tapi seberapa banyak dopamin yang lagi ngalir di kepalamu!",
+      "visual": "default",
+      "visual_cue": "default",
+      "tag": "KESIMPULAN",
+      "headline_line1": "WAKTU ITU ILUSI",
+      "headline_line2": "DOPAMIN NYATA!",
+      "objects": ["thumbs_up", "gold_sparkle", "badge_check"],
+      "camera_shot": "wide-outro",
+      "sound_cue": "impact_bell"
+    }
+  ]
+}

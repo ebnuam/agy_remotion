@@ -1,0 +1,101 @@
+{
+  "title": "Misteri Gaji Numpang Lewat",
+  "hook": "Tanggal satu berasa sultan, tanggal lima belas mendadak jadi gembel?",
+  "narration": "Tanggal satu berasa jadi sultan Dubai. Tapi masuk tanggal lima belas mendadak jadi gembel nungguin diskon. Padahal gaji tahun ini naik dibanding tahun lalu. Tapi anehnya sisa saldo rekening tetap aja mepet. Fenomena ini bernama Lifestyle Creep alias jebakan gaya hidup. Dulu minum kopi saset dua ribu perak udah nikmat banget. Sekarang wajib kopi kafe empat puluh ribu dan ngeluh kurang creamy. Ditambah penyakit self-reward checkout barang nggak penting tengah malam. Coba cek keranjang e-commerce dan pesanan makananmu sekarang!",
+  "punchline": "Gaji bukan sedikit, tapi standar hidupmu yang merayap naik!",
+  "theme_color": "#FF7A00",
+  "channel_id": "otak-receh",
+  "channel_name": "Otak Receh",
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Tanggal satu berasa jadi sultan Dubai yang uangnya nggak berseri.",
+      "tag": "KASUS #1: GAJI SULTAN",
+      "headline_line1": "TANGGAL 1 SULTAN,",
+      "headline_line2": "UANG MELAYANG!",
+      "visual_cue": "sultan_money",
+      "camera_shot": "zoom_punch",
+      "sound_cue": "whoosh"
+    },
+    {
+      "index": 2,
+      "text": "Tapi masuk tanggal lima belas mendadak jadi gembel nungguin promo mi instan.",
+      "tag": "FAKTA SALDO",
+      "headline_line1": "TANGGAL 15 GEMBEL,",
+      "headline_line2": "DOMPET KEMPES KERING",
+      "visual_cue": "dompet_kempes",
+      "camera_shot": "pan_left",
+      "sound_cue": "wind"
+    },
+    {
+      "index": 3,
+      "text": "Padahal kalau dipikir logika gaji kamu tahun ini udah naik lumayan lho.",
+      "tag": "MISTERI FINANSIAL",
+      "headline_line1": "GAJI TAHUN INI NAIK,",
+      "headline_line2": "TAPI KOK TETAP MINUS?",
+      "visual_cue": "kalender_deadline",
+      "camera_shot": "tracking",
+      "sound_cue": "pop"
+    },
+    {
+      "index": 4,
+      "text": "Fenomena seram ini punya nama ilmiah: Lifestyle Creep alias gaya hidup merayap.",
+      "tag": "PSIKOLOGI UANG",
+      "headline_line1": "JEBAKAN MERAYAP:",
+      "headline_line2": "LIFESTYLE CREEP",
+      "visual_cue": "timbangan_vs",
+      "camera_shot": "pull_reveal",
+      "sound_cue": "chime"
+    },
+    {
+      "index": 5,
+      "text": "Dulu pas gaji pas-pasan, minum kopi saset dua ribu perak aja nikmat.",
+      "tag": "STANDAR DULU",
+      "headline_line1": "DULU CUKUP KOPI SASET",
+      "headline_line2": "DUA RIBU PERAK",
+      "visual_cue": "kopi_kafe",
+      "camera_shot": "zoom_punch",
+      "sound_cue": "sip"
+    },
+    {
+      "index": 6,
+      "text": "Sekarang nongkrong di kafe estetik empat puluh ribu, ngeluh kurang creamy.",
+      "tag": "STANDAR SEKARANG",
+      "headline_line1": "SEKARANG KAFE ESTETIK,",
+      "headline_line2": "EMPAT PULUH RIBU!",
+      "visual_cue": "kopi_kafe",
+      "camera_shot": "pan_right",
+      "sound_cue": "cash"
+    },
+    {
+      "index": 7,
+      "text": "Belum lagi penyakit kronis self-reward tiap kali merasa capek kerja.",
+      "tag": "PENYAKIT KRONIS",
+      "headline_line1": "ALIBI SELF-REWARD:",
+      "headline_line2": "CHECKOUT IMPULSIF!",
+      "visual_cue": "checkout_belanja",
+      "camera_shot": "tracking",
+      "sound_cue": "bell"
+    },
+    {
+      "index": 8,
+      "text": "Padahal tagihan dan cicilan udah antre senyum manis di depan pintu.",
+      "tag": "ALARM DARURAT",
+      "headline_line1": "TAGIHAN ANTRENGAH,",
+      "headline_line2": "DOMPET MENJERIT PANIK!",
+      "visual_cue": "alarm_panik",
+      "camera_shot": "shake_punch",
+      "sound_cue": "alarm"
+    },
+    {
+      "index": 9,
+      "text": "Coba cek riwayat pesanan makanan dan keranjang e-commerce kamu sekarang!",
+      "tag": "PUNCHLINE",
+      "headline_line1": "CEK KERANJANGMU:",
+      "headline_line2": "SADAR ATAU NYESEL?",
+      "visual_cue": "sultan_money",
+      "camera_shot": "pull_reveal",
+      "sound_cue": "whoosh"
+    }
+  ]
+}

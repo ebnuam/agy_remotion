@@ -1,0 +1,22 @@
+{
+  "title": "Kasus Parkiran Tengah Malam",
+  "hook": "Mobil putih ini sudah terparkir berhari-hari tanpa pemilik.",
+  "narration": "Mobil putih ini sudah terparkir berhari-hari tanpa pemilik di sebuah parkiran basement yang sepi.",
+  "punchline": "Siapa sebenarnya pemilik mobil misterius ini?",
+  "theme_color": "#FFB800",
+  "channel_name": "Oddly Known",
+  "channel_id": "oddly-known",
+  "audio_file": "",
+  "audio_duration": 4.0,
+  "scenes": [
+    {
+      "index": 1,
+      "text": "Mobil putih ini sudah terparkir berhari-hari tanpa pemilik di parkiran.",
+      "visual_cue": "Mobil putih di parkiran sepi",
+      "environment_asset": "test_parkiran_malam.svg",
+      "actor_asset": "test_mobil_putih.svg",
+      "start_seconds": 0.0,
+      "end_seconds": 4.0
+    }
+  ]
+}
