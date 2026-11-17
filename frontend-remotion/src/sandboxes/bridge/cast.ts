@@ -171,7 +171,7 @@ const LEAD = 2 / FPS;
 /** eyelid 0 open .. 1 shut. Reference: gaps 0.5-2.3 s, 4-frame blink half / shut / shut / half, plus a blink across
  *  every expression swap (the shut frames hide the swap) */
 const LID = [0.5, 1, 1, 0.5];
-const SWAPS: Record<number, number[]> = { 4: [16.17, 17.3], 5: [19.48, 20.6], 6: [21.9, 23.7], 7: [29.4, 30.6], 8: [SNAP] };
+const SWAPS: Record<number, number[]> = { 4: [22, 25], 5: [30, 33], 6: [38, 42], 7: [48, 51], 8: [56] };
 const lidAt = (t: number, i: number, swaps: number[] = []) => {
   const f = Math.round(t * FPS);
   for (const ts of swaps) { const k = f - Math.round((ts - LEAD) * FPS) + 1; if (k >= 0 && k < 4) return LID[k]; }
@@ -224,55 +224,59 @@ const blob = (out: Stage, x: number, y: number, z: number, sc = 1, k = 1) => {
 // ---------------- crowd by shot ----------------
 export type Stage = { places: Place[]; fx: FxPlace[] };
 
-const exprMarch = (id: number, t: number, i: number, tau: number): { expr: Expr; look: number } => {
-  const lau = i % 3 === 0, whi = i % 5 === 1, L = LEAD;
+const exprMarch = (id: number, _t: number, i: number, _tau: number): { expr: Expr; look: number } => {
   switch (id) {
-    case 1: return { expr: lau ? "laugh" : whi ? "whistle" : "grin", look: 0 };
-    case 2: case 3: return { expr: i % 4 === 3 ? "smile_closed" : i % 2 ? "neutral" : "stern", look: 0 };
-    case 4: return t < 16.17 - L ? { expr: i % 2 ? "neutral" : "stern", look: 0 } : t < 17.3 - L ? { expr: lau ? "shock" : "nervous", look: 0 } : { expr: "neutral", look: 0 };
-    case 5: return { expr: t < 19.48 - L ? "neutral" : t < 20.6 - L ? "grin" : i % 2 ? "laugh" : "grin", look: 0 };
-    case 6: return { expr: (i === 2 && t > 21.9 - L) || (t > 23.7 - L && i % 4 === 1) ? "whistle" : t > 23.7 - L && lau ? "laugh" : "grin", look: 0 };
-    case 7: return t < 29.4 - L ? { expr: lau ? "laugh" : "grin", look: 0 } : t < 30.6 - L ? { expr: i % 2 ? "nervous" : "grin", look: -1 } : { expr: "nervous", look: 0 };
-    case 8: return { expr: tau < SNAP - L ? "nervous" : "shock", look: tau < SNAP + 0.6 ? -1 : 0 };
-    default: return { expr: whi ? "whistle" : "grin", look: 0 };
+    case 1:
+      // Act 1: The Hook (Ceria / bangga)
+      return { expr: i % 3 === 0 ? "laugh" : i % 5 === 1 ? "whistle" : "grin", look: 0 };
+    case 2:
+    case 3:
+      // Act 2: Sejarah Broughton (Rapi & bangga)
+      return { expr: i % 4 === 3 ? "smile_closed" : i % 2 ? "neutral" : "stern", look: 0 };
+    case 4:
+    case 5:
+      // Act 3: Munculnya Efek Resonansi (Mulai bingung / melirik)
+      return { expr: i % 3 === 0 ? "nervous" : i % 4 === 1 ? "shock" : "neutral", look: i % 2 ? -1 : 1 };
+    case 6:
+      // Act 4: Puncak Goyangan / Klimaks (Panik / kaget / mata melotot)
+      return { expr: i % 2 === 0 ? "shock" : i % 3 === 1 ? "dazed" : "pained", look: i % 2 ? -1 : 0 };
+    case 7:
+      // Act 5: Solusi Break Step (Lega / senyum kembali)
+      return { expr: i % 3 === 0 ? "relief" : i % 4 === 1 ? "smile" : "smile_closed", look: 0 };
+    case 8:
+    default:
+      return { expr: i % 2 === 0 ? "smile" : "smile_closed", look: 0 };
   }
 };
 
-/** the marching column (shots 1-8, 13) */
+/** the marching column (shots 1-7) */
 const column = (id: number, t: number, b: BridgeState, cam: CamInfo, out: Stage) => {
   const s = SHOTS[id - 1], tau = s.tau(t);
-  const stopT = SNAP + 0.3, walkT = id === 8 ? Math.min(tau, stopT) : tau;
-  const F = front(walkT), ph = marchPhase(walkT), st = stomp(tau);
-  const falling = id === 8 && tau >= DROP0;
+  const isBreakStep = id === 7;
+  const walkT = tau;
+  const F = front(walkT), ph = marchPhase(walkT), st = isBreakStep ? 0.3 : stomp(tau);
   for (let i = 0; i < COUNT; i++) {
     const row = i >> 2, x0 = FILES[i & 3] + (hh(i) - 0.5) * 0.08, z = F + row * ROW_GAP + (hh(i, 2) - 0.5) * 0.1;
     let x = x0, y = Math.abs(z) <= 30 ? deckY(z, b) : D0;
     const who: Who = { i, o: SOLDIER[vOf(i)], okey: `s${vOf(i)}` };
     let { expr, look } = exprMarch(id, t, i, tau);
-    let mode: "march" | "stand" | "fall" | "sit" = id === 8 && tau >= SNAP + 0.25 ? "stand" : "march";
+    let mode: "march" | "stand" | "fall" | "sit" = "march";
     let tilt = 0;
-    if (falling) {
-      // the soldiers lag the falling deck a little (cartoon hang time), then sit in the water
-      const lagY = D0 + b.bounce * shapeZ(z) - dropU(tau - 0.13) * DROP_H * dropW(z);
-      const air = Math.max(0, lagY - y);
-      y += air;
-      const u = clamp01((tau - DROP0) / (DROP1 - DROP0));
-      x = x0 + (hh(i, 3) - 0.5) * 0.7 * u;
-      mode = tau < DROP1 + 0.13 ? "fall" : "sit";
-      tilt = mode === "fall" ? (hh(i, 4) - 0.5) * 50 * u : 0;
-      if (mode === "sit") expr = i % 3 ? "dazed" : "shock";
+    if (id === 6) {
+      // Act 4: peak sway tilt with wild vertical wave
+      tilt = (hh(i, 4) - 0.5) * 22 * (Math.abs(b.bounce) / 0.75);
     }
     const view = viewOf(cam, x, z, 0, -1);
+    // Break step phase: randomized offset per soldier!
+    const soldierPhase = isBreakStep ? ((ph + hh(i, 7) * 0.85) % 1) : ph;
     const blink = expr !== "whistle" ? lidAt(t, i, SWAPS[id]) : 0;
-    const fo: FrontOpts = { phase: mode === "march" ? ph : 0, expr, mode, look, blink, lift: 60 * st, tilt };
-    // side views: the stance foot keeps pace with the column (0.8 m steps at 2 steps/s), foreshortened by the view
-    const so: SideOpts = { phase: mode === "march" ? ph : 0, expr, mode: mode === "march" ? "march" : "stand", blink, stomp: st, stride: view.fs };
-    out.places.push(person(cam, who, x, y, z, mode === "fall" || mode === "sit" ? { side: false, mirror: false } : view, fo, so));
-    if (mode === "march" || mode === "stand") blob(out, x, y, z);
-    // whistled notes drift up from whistlers near the lens
-    if (expr === "whistle" && (id === 6 || id === 1 || id === 13) && cam.pos.distanceTo(tmp.set(x, y, z)) < 16) {
-      for (let n = 0; n < 4; n++) {
-        const age = ((t - 21.9 + n * 0.42 + hh(i, 5)) % 1.68) / 1.68;
+    const fo: FrontOpts = { phase: soldierPhase, expr, mode, look, blink, lift: isBreakStep ? 24 : 60 * st, tilt };
+    const so: SideOpts = { phase: soldierPhase, expr, mode, blink, stomp: st, stride: view.fs };
+    out.places.push(person(cam, who, x, y, z, view, fo, so));
+    blob(out, x, y, z);
+    if (expr === "whistle" && (id === 1 || id === 7) && cam.pos.distanceTo(tmp.set(x, y, z)) < 16) {
+      for (let n = 0; n < 3; n++) {
+        const age = ((t - 2.0 + n * 0.42 + hh(i, 5)) % 1.68) / 1.68;
         const pop = Math.min(1, age * 7) * (age > 0.82 ? (1 - age) / 0.18 : 1);
         if (pop <= 0.02) continue;
         const kind = (n + i) % 2, side = 0.16 + 0.32 * age + 0.05 * Math.sin(age * 9 + n);

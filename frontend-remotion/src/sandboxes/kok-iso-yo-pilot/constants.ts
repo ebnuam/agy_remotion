@@ -1,13 +1,15 @@
 /**
  * KOK ISO YO? - PILOT 01 CONSTANTS & TIMELINE
  * Title: "Kenapa Es Batu Bisa Mengapung?"
- * Duration: 8.00 seconds = 240 frames @ 30 FPS
- * Resolution: 540 x 960 (9:16 vertical)
+ * Complete 60-Second Pilot (Bridge Test C Visual Style)
+ * Duration: 60.00 seconds = 1800 frames @ 30 FPS
+ * Preview: 540 x 960 (9:16 vertical)
+ * Production: 1080 x 1920 (9:16 vertical Full HD)
  */
 
 export const PILOT_CONFIG = {
   fps: 30,
-  durationInFrames: 240, // 8.0 seconds
+  durationInFrames: 1800, // 60.0 seconds
   width: 540,
   height: 960,
   productionWidth: 1080,
@@ -15,32 +17,58 @@ export const PILOT_CONFIG = {
 } as const;
 
 export const SHOTS = {
-  // Shot 1: Hook (0 - 2s)
-  shot1: {
+  // Scene 1: Hook (0 - 8s)
+  scene1: {
     startFrame: 0,
-    endFrame: 60,
-    duration: 60,
-    voStartFrame: 4,
-    voFile: "assets/kok_iso_yo/vo_shot1.mp3",
-    caption: "Kok es batu bisa mengapung?",
-  },
-  // Shot 2: Explanation & Molecular Lattice (2 - 6s)
-  shot2: {
-    startFrame: 60,
-    endFrame: 180,
-    duration: 120,
-    voStartFrame: 64,
-    voFile: "assets/kok_iso_yo/vo_shot2_timed.mp3",
-    caption: "Saat membeku, air mengembang. Susunannya lebih renggang, jadi massa jenisnya turun.",
-  },
-  // Shot 3: Punchline (6 - 8s)
-  shot3: {
-    startFrame: 180,
     endFrame: 240,
-    duration: 60,
-    voStartFrame: 186,
-    voFile: "assets/kok_iso_yo/vo_shot3.mp3",
+    duration: 240,
+    voStartFrame: 70,
+    voFile: "assets/kok_iso_yo/vo_scene1.mp3",
+    caption: "Kok es batu bisa mengapung?",
+    highlightWord: "mengapung",
+  },
+  // Scene 2: The Question (8 - 18s)
+  scene2: {
+    startFrame: 240,
+    endFrame: 540,
+    duration: 300,
+    voStartFrame: 290,
+    voFile: "assets/kok_iso_yo/vo_scene2.mp3",
+    caption: "Padahal, bukannya benda padat harusnya tenggelam?",
+    highlightWord: "tenggelam",
+  },
+  // Scene 3: Scientific Explanation (18 - 38s)
+  scene3: {
+    startFrame: 540,
+    endFrame: 1140,
+    duration: 600,
+    voStartFrame: 580,
+    voFile: "assets/kok_iso_yo/vo_scene3.mp3",
+    captionPart1: "Saat membeku, molekul air membentuk susunan yang lebih renggang.",
+    captionPart2: "Akibatnya, volume air bertambah dan massa jenisnya justru turun.",
+    splitFrame: 840,
+    highlightWord1: "lebih renggang",
+    highlightWord2: "massa jenisnya turun",
+  },
+  // Scene 4: Demonstration (38 - 50s)
+  scene4: {
+    startFrame: 1140,
+    endFrame: 1500,
+    duration: 360,
+    voStartFrame: 1180,
+    voFile: "assets/kok_iso_yo/vo_scene4.mp3",
+    caption: "Itulah sebabnya es bisa mengapung di atas air.",
+    highlightWord: "mengapung di atas air",
+  },
+  // Scene 5: Punchline & Outro (50 - 60s)
+  scene5: {
+    startFrame: 1500,
+    endFrame: 1800,
+    duration: 300,
+    voStartFrame: 1560,
+    voFile: "assets/kok_iso_yo/vo_scene5.mp3",
     caption: "Dingin-dingin malah makan tempat!",
+    highlightWord: "makan tempat!",
   },
 } as const;
 

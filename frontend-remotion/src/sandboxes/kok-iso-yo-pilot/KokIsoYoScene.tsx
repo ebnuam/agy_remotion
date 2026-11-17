@@ -1,15 +1,26 @@
 /**
- * KOK ISO YO? - Pilot 01 Main Scene Component
- * Integrates Three.js 2.5D World, Remotion ThreeCanvas,
- * Kinetic Subtitle Overlays, and Multi-track Audio (VO, BGM, SFX).
+ * KOK ISO YO? - PILOT 01 COMPLETE SCENE COMPONENT
+ * 60-Second Video Short in Bridge Test C Visual Style
+ * Topic: "Kenapa Es Batu Bisa Mengapung?"
+ * 
+ * Features:
+ * - Three.js WebGL 3D World (Laboratory, Molecular Realm, Demonstration Stage)
+ * - Bridge Test C Postprocessing Stack:
+ *   * InkPass (silhouette & crease outlining for 3D world geometry)
+ *   * LensBlur (cinematic thin-lens depth of field)
+ *   * BloomEffect (emissive & highlight glow)
+ *   * ToneMappingEffect (ACES Filmic)
+ *   * GradeEffect (warm laboratory color grading)
+ * - Kinetic Subtitles synchronized with voiceover narration
+ * - Multi-track Audio Pipeline: Looped BGM, 5-scene VO, and precision SFX
  */
+
 import React, { useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import {
   AbsoluteFill,
   Audio,
-  continueRender,
-  delayRender,
+  Loop,
   Sequence,
   staticFile,
   useCurrentFrame,
@@ -18,121 +29,123 @@ import {
 import { ThreeCanvas } from "@remotion/three";
 import { useThree } from "@react-three/fiber";
 import { EffectComposer } from "@react-three/postprocessing";
-import { BloomEffect, ToneMappingEffect, ToneMappingMode } from "postprocessing";
+import { BlendFunction, BloomEffect, ToneMappingEffect, ToneMappingMode } from "postprocessing";
 import { AUDIO_TRACKS, SHOTS } from "./constants";
 import { KokIsoYoWorld } from "./KokIsoYoWorld";
+import { InkPass, noInkFallback } from "../bridge/ink";
+import { LensBlur } from "../bridge/lensblur";
+import { GradeEffect, GRADES, GRADE_STRENGTH } from "../bridge/grade";
 
-// 1. Texture Preloader
-const TEXTURE_LIST = [
-  "mas_iso_front.png",
-  "mas_iso_front_headless.png",
-  "mas_iso_34.png",
-  "head_curious.png",
-  "head_shocked.png",
-  "head_deadpan.png",
-  "pose_explaining.png",
-  "pose_panic.png",
-];
-
+// 1. Texture Initialization
 const useTextures = () => {
-  const [textures, setTextures] = useState<Record<string, THREE.Texture> | null>(null);
-  const [handle] = useState(() => delayRender("loading mas iso textures"));
-
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    let count = 0;
-    const loaded: Record<string, THREE.Texture> = {};
-
-    TEXTURE_LIST.forEach((name) => {
-      loader.load(
-        staticFile(`assets/kok_iso_yo/${name}`),
-        (tex) => {
-          tex.colorSpace = THREE.SRGBColorSpace;
-          loaded[name] = tex;
-          count++;
-          if (count === TEXTURE_LIST.length) {
-            setTextures(loaded);
-            continueRender(handle);
-          }
-        },
-        undefined,
-        () => {
-          count++;
-          if (count === TEXTURE_LIST.length) {
-            setTextures(loaded);
-            continueRender(handle);
-          }
-        }
-      );
-    });
-  }, [handle]);
-
-  return textures;
+  return useMemo<Record<string, THREE.Texture>>(() => ({}), []);
 };
 
-// 2. Three.js Inner Render Loop
+// 2. Three.js Inner Render Loop with Bridge Look-Match Postprocessing
 const InnerWorld: React.FC<{ textures: Record<string, THREE.Texture> }> = ({ textures }) => {
   const frame = useCurrentFrame();
-  const { camera } = useThree();
-
-  const world = useMemo(() => new KokIsoYoWorld(textures), [textures]);
+  const { camera, scene } = useThree();
   const cam = camera as THREE.PerspectiveCamera;
 
-  // Update world simulation and camera position synchronously before render
-  world.update(frame, cam);
+  const world = useMemo(() => new KokIsoYoWorld(textures), [textures]);
 
-  // Postprocessing: ToneMapping (ACES_FILMIC) + Subtle Bloom
-  const fx = useMemo(
-    () => ({
-      bloom: new BloomEffect({ intensity: 0.35, luminanceThreshold: 0.95 }),
-      tone: new ToneMappingEffect({ mode: ToneMappingMode.ACES_FILMIC }),
-    }),
-    []
-  );
+  // Update world simulation and camera choreography synchronously before render
+  world.update(frame, cam, scene);
+  noInkFallback(world.root);
+
+  // Postprocessing Stack (Bridge Test C Architecture)
+  const fx = useMemo(() => {
+    const ink = new InkPass(scene, cam, {
+      color: "#050505",
+      strength: 0.9,
+      widthNear: 3.6,
+      widthFar: 2.2,
+    });
+    const lens = new LensBlur({ maxCoC: 20, nearScale: 1.15 });
+    const bloom = new BloomEffect({
+      blendFunction: BlendFunction.ADD,
+      intensity: 0.4,
+      luminanceThreshold: 0.95,
+      mipmapBlur: true,
+      levels: 5,
+    });
+    const tone = new ToneMappingEffect({ mode: ToneMappingMode.ACES_FILMIC });
+    const grade = new GradeEffect(GRADES.day, GRADE_STRENGTH.day * 0.85);
+
+    return { ink, lens, bloom, tone, grade };
+  }, [cam, scene]);
+
+  useEffect(() => () => fx.ink.dispose(), [fx]);
+
+  // Thin-lens focus distance (focused on primary visual target)
+  fx.lens.focus = Math.max(0.4, world.getFocusDistance(cam));
+  fx.lens.cInf = 14;
 
   return (
     <>
       <primitive object={world.root} dispose={null} />
       <EffectComposer multisampling={4}>
-        <primitive object={fx.bloom} />
-        <primitive object={fx.tone} />
+        <primitive object={fx.ink} dispose={null} />
+        <primitive object={fx.lens.pre} dispose={null} />
+        <primitive object={fx.lens.main} dispose={null} />
+        <primitive object={fx.bloom} dispose={null} />
+        <primitive object={fx.tone} dispose={null} />
+        <primitive object={fx.grade} dispose={null} />
       </EffectComposer>
     </>
   );
 };
 
-// 3. Kinetic Subtitle Overlay Component
+// 3. Kinetic Subtitle Overlay Component (5 Scenes Synced)
 const KineticSubtitle: React.FC = () => {
   const frame = useCurrentFrame();
 
   let text = "";
-  let highlightWord = "";
+  let highlightPhrase = "";
 
-  if (frame >= SHOTS.shot1.startFrame && frame < SHOTS.shot1.endFrame) {
-    text = "Kok es batu bisa mengapung?";
-    highlightWord = "mengapung";
-  } else if (frame >= SHOTS.shot2.startFrame && frame < SHOTS.shot2.endFrame) {
-    if (frame < 125) {
-      text = "Saat membeku, air mengembang...";
-      highlightWord = "mengembang";
-    } else {
-      text = "Susunannya lebih renggang, massa jenisnya turun!";
-      highlightWord = "massa jenisnya turun";
+  if (frame >= SHOTS.scene1.startFrame && frame < SHOTS.scene1.endFrame) {
+    if (frame >= SHOTS.scene1.voStartFrame - 5) {
+      text = SHOTS.scene1.caption;
+      highlightPhrase = SHOTS.scene1.highlightWord;
     }
-  } else if (frame >= SHOTS.shot3.startFrame) {
-    text = "Dingin-dingin malah makan tempat!";
-    highlightWord = "makan tempat!";
+  } else if (frame >= SHOTS.scene2.startFrame && frame < SHOTS.scene2.endFrame) {
+    if (frame >= SHOTS.scene2.voStartFrame - 5) {
+      text = SHOTS.scene2.caption;
+      highlightPhrase = SHOTS.scene2.highlightWord;
+    }
+  } else if (frame >= SHOTS.scene3.startFrame && frame < SHOTS.scene3.endFrame) {
+    if (frame >= SHOTS.scene3.voStartFrame - 5) {
+      if (frame < SHOTS.scene3.splitFrame) {
+        text = SHOTS.scene3.captionPart1;
+        highlightPhrase = SHOTS.scene3.highlightWord1;
+      } else {
+        text = SHOTS.scene3.captionPart2;
+        highlightPhrase = SHOTS.scene3.highlightWord2;
+      }
+    }
+  } else if (frame >= SHOTS.scene4.startFrame && frame < SHOTS.scene4.endFrame) {
+    if (frame >= SHOTS.scene4.voStartFrame - 5) {
+      text = SHOTS.scene4.caption;
+      highlightPhrase = SHOTS.scene4.highlightWord;
+    }
+  } else if (frame >= SHOTS.scene5.startFrame) {
+    if (frame >= SHOTS.scene5.voStartFrame - 5) {
+      text = SHOTS.scene5.caption;
+      highlightPhrase = SHOTS.scene5.highlightWord;
+    }
   }
 
   if (!text) return null;
+
+  const words = text.split(" ");
 
   return (
     <div
       style={{
         position: "absolute",
-        bottom: 80,
-        left: 20,
-        right: 20,
+        bottom: 95,
+        left: 24,
+        right: 24,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -142,28 +155,41 @@ const KineticSubtitle: React.FC = () => {
     >
       <div
         style={{
-          backgroundColor: "rgba(18, 22, 28, 0.88)",
-          border: "2px solid rgba(255, 215, 0, 0.6)",
-          padding: "10px 22px",
-          borderRadius: 30,
-          boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
+          backgroundColor: "rgba(18, 24, 32, 0.90)",
+          border: "2px solid rgba(255, 209, 102, 0.65)",
+          padding: "10px 20px",
+          borderRadius: 24,
+          boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
           textAlign: "center",
           color: "#FFFFFF",
-          fontSize: 22,
+          fontSize: 20,
           fontWeight: 800,
           fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           textShadow: "0 2px 4px rgba(0,0,0,0.8)",
-          letterSpacing: 0.3,
+          letterSpacing: 0.2,
+          lineHeight: 1.35,
+          maxWidth: "88%",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          rowGap: 4,
         }}
       >
-        {text.split(" ").map((word, i) => {
-          const isHighlight = highlightWord.toLowerCase().includes(word.toLowerCase());
+        {words.map((word, i) => {
+          const cleanWord = word.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+          const isHighlight = highlightPhrase
+            .toLowerCase()
+            .split(" ")
+            .some((hw) => hw && cleanWord.includes(hw));
+
           return (
             <span
               key={i}
               style={{
                 color: isHighlight ? "#FFD166" : "#FFFFFF",
                 marginRight: 6,
+                textDecoration: isHighlight ? "underline" : "none",
+                textUnderlineOffset: 4,
               }}
             >
               {word}
@@ -175,7 +201,42 @@ const KineticSubtitle: React.FC = () => {
   );
 };
 
-// 4. Main Exported Scene
+// 4. Channel Watermark & Badge
+const ChannelWatermark: React.FC = () => {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 48,
+        left: 32,
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        pointerEvents: "none",
+        zIndex: 40,
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#1E7B85",
+          color: "#FFFFFF",
+          fontFamily: "'Segoe UI', Roboto, sans-serif",
+          fontSize: 14,
+          fontWeight: 900,
+          padding: "6px 14px",
+          borderRadius: 16,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          letterSpacing: 1.0,
+          border: "1.5px solid rgba(255,255,255,0.3)",
+        }}
+      >
+        KOK ISO YO?
+      </div>
+    </div>
+  );
+};
+
+// 5. Main Exported Pilot Scene
 export const KokIsoYoScene: React.FC = () => {
   const textures = useTextures();
   const { width, height } = useVideoConfig();
@@ -191,49 +252,94 @@ export const KokIsoYoScene: React.FC = () => {
         width={width}
         height={height}
         camera={{ fov: 42, near: 0.1, far: 50 }}
-        gl={{ antialias: true, powerPreference: "high-performance" }}
+        gl={{
+          antialias: false,
+          powerPreference: "high-performance",
+          toneMappingExposure: 1.0,
+        }}
       >
         <InnerWorld textures={textures} />
       </ThreeCanvas>
 
+      {/* Channel Watermark */}
+      <ChannelWatermark />
+
       {/* Kinetic Subtitles */}
       <KineticSubtitle />
 
-      {/* Audio Layer 1: Background Music (Looped across 8 seconds) */}
-      <Audio src={staticFile(AUDIO_TRACKS.bgm)} volume={0.25} />
+      {/* ================================================================= */}
+      {/* AUDIO LAYER 1: Background Music (Looped across 60.0 seconds)      */}
+      {/* ================================================================= */}
+      <Loop durationInFrames={240}>
+        <Audio src={staticFile(AUDIO_TRACKS.bgm)} volume={0.24} />
+      </Loop>
 
-      {/* Audio Layer 2: Voice-Over Sequences */}
-      <Sequence from={SHOTS.shot1.voStartFrame} durationInFrames={SHOTS.shot1.duration}>
-        <Audio src={staticFile(SHOTS.shot1.voFile)} volume={1.0} />
+      {/* ================================================================= */}
+      {/* AUDIO LAYER 2: Voice-Over Sequences (5 Scenes)                   */}
+      {/* ================================================================= */}
+      {/* Scene 1 VO */}
+      <Sequence from={SHOTS.scene1.voStartFrame} durationInFrames={SHOTS.scene1.duration - SHOTS.scene1.voStartFrame}>
+        <Audio src={staticFile(SHOTS.scene1.voFile)} volume={1.0} />
       </Sequence>
 
-      <Sequence from={SHOTS.shot2.voStartFrame} durationInFrames={SHOTS.shot2.duration}>
-        <Audio src={staticFile(SHOTS.shot2.voFile)} volume={1.0} />
+      {/* Scene 2 VO */}
+      <Sequence from={SHOTS.scene2.voStartFrame} durationInFrames={SHOTS.scene2.duration - (SHOTS.scene2.voStartFrame - SHOTS.scene2.startFrame)}>
+        <Audio src={staticFile(SHOTS.scene2.voFile)} volume={1.0} />
       </Sequence>
 
-      <Sequence from={SHOTS.shot3.voStartFrame} durationInFrames={SHOTS.shot3.duration}>
-        <Audio src={staticFile(SHOTS.shot3.voFile)} volume={1.0} />
+      {/* Scene 3 VO */}
+      <Sequence from={SHOTS.scene3.voStartFrame} durationInFrames={SHOTS.scene3.duration - (SHOTS.scene3.voStartFrame - SHOTS.scene3.startFrame)}>
+        <Audio src={staticFile(SHOTS.scene3.voFile)} volume={1.0} />
       </Sequence>
 
-      {/* Audio Layer 3: Sound Effects (SFX) */}
-      {/* SFX: Whoosh into Shot 2 */}
-      <Sequence from={56} durationInFrames={15}>
+      {/* Scene 4 VO */}
+      <Sequence from={SHOTS.scene4.voStartFrame} durationInFrames={SHOTS.scene4.duration - (SHOTS.scene4.voStartFrame - SHOTS.scene4.startFrame)}>
+        <Audio src={staticFile(SHOTS.scene4.voFile)} volume={1.0} />
+      </Sequence>
+
+      {/* Scene 5 VO */}
+      <Sequence from={SHOTS.scene5.voStartFrame} durationInFrames={SHOTS.scene5.duration - (SHOTS.scene5.voStartFrame - SHOTS.scene5.startFrame)}>
+        <Audio src={staticFile(SHOTS.scene5.voFile)} volume={1.0} />
+      </Sequence>
+
+      {/* ================================================================= */}
+      {/* AUDIO LAYER 3: Sound Effects (SFX Choreography)                  */}
+      {/* ================================================================= */}
+      {/* Scene 1: Initial Whoosh & Ice Plunge Splash */}
+      <Sequence from={0} durationInFrames={18}>
+        <Audio src={staticFile(AUDIO_TRACKS.whoosh)} volume={0.4} />
+      </Sequence>
+      <Sequence from={24} durationInFrames={25}>
+        <Audio src={staticFile(AUDIO_TRACKS.iceClink)} volume={0.7} />
+      </Sequence>
+
+      {/* Scene 2: Transition Whoosh & Heavy Metal Sink Clink */}
+      <Sequence from={232} durationInFrames={18}>
+        <Audio src={staticFile(AUDIO_TRACKS.whoosh)} volume={0.45} />
+      </Sequence>
+      <Sequence from={332} durationInFrames={25}>
+        <Audio src={staticFile(AUDIO_TRACKS.iceClink)} volume={0.65} />
+      </Sequence>
+
+      {/* Scene 3: Zoom into Molecular Space & Crystal Freeze Snap */}
+      <Sequence from={532} durationInFrames={18}>
+        <Audio src={staticFile(AUDIO_TRACKS.whoosh)} volume={0.5} />
+      </Sequence>
+      <Sequence from={718} durationInFrames={25}>
+        <Audio src={staticFile(AUDIO_TRACKS.iceClink)} volume={0.7} />
+      </Sequence>
+
+      {/* Scene 4: Transition to Demonstration Stage */}
+      <Sequence from={1132} durationInFrames={18}>
         <Audio src={staticFile(AUDIO_TRACKS.whoosh)} volume={0.45} />
       </Sequence>
 
-      {/* SFX: Ice Clink & Molecular Expansion */}
-      <Sequence from={88} durationInFrames={20}>
-        <Audio src={staticFile(AUDIO_TRACKS.iceClink)} volume={0.6} />
-      </Sequence>
-
-      {/* SFX: Whoosh back to Shot 3 */}
-      <Sequence from={176} durationInFrames={15}>
+      {/* Scene 5: Return to Lab & Comedic Punchline Pop! */}
+      <Sequence from={1492} durationInFrames={18}>
         <Audio src={staticFile(AUDIO_TRACKS.whoosh)} volume={0.45} />
       </Sequence>
-
-      {/* SFX: Comedic Pop on Deadpan Punchline */}
-      <Sequence from={188} durationInFrames={15}>
-        <Audio src={staticFile(AUDIO_TRACKS.punchlinePop)} volume={0.7} />
+      <Sequence from={1572} durationInFrames={20}>
+        <Audio src={staticFile(AUDIO_TRACKS.punchlinePop)} volume={0.85} />
       </Sequence>
     </AbsoluteFill>
   );

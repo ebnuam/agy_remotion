@@ -409,11 +409,10 @@ export class World {
     // ---- cast + effects ----
     const right = V(0, 0, 0).setFromMatrixColumn(cam.matrixWorld, 0);
     const st = stage(id, t, b, { pos: cam.position, right });
-    if (id === 8) {
-      snapFx(tau, BOLT, st); splashFx(tau, st);
-      if (tau > 33.1 && tau < SNAP) creakFx(t, [[BOLT[0] + 0.3, BOLT[1] + 0.14, BOLT[2] - 0.12], [BOLT[0] - 0.32, BOLT[1] + 0.08, BOLT[2] - 0.12]], st, 0.3);
+    if (id === 5 || id === 6) {
+      creakFx(t, [[BOLT[0] + 0.3, BOLT[1] + 0.14, BOLT[2] - 0.12], [BOLT[0] - 0.32, BOLT[1] + 0.08, BOLT[2] - 0.12]], st, 0.3);
     }
-    if (id === 7 && t > 28.9) {
+    if (id === 4) {
       const F = front(tau);
       creakFx(t, [3, 5.5, 8].map((dz) => [-2.7, chainY(F + dz, b) + 0.35, F + dz] as V3), st);
     }
